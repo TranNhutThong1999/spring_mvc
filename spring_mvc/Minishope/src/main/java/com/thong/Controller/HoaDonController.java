@@ -45,7 +45,7 @@ public class HoaDonController {
 		hoaDon.setTinhTrang("đang chờ duyệt");
 		
 		
-		int id=hoaDonService.ThemHoaDon(hoaDon);
+		int id=hoaDonService.themHoaDon(hoaDon);
 		
 		List<GioHang> list = (List<GioHang>) session.getAttribute("gioHang");
 		for (GioHang gh : list) {
@@ -58,7 +58,7 @@ public class HoaDonController {
 			chiTietHoaDon.setGiaTien(gh.getGiaTien());
 			chiTietHoaDon.setSoLuong(gh.getSoLuong());
 			
-			chiTietHoaDonService.ThemChiTietHoaDon(chiTietHoaDon);
+			chiTietHoaDonService.themChiTietHoaDon(chiTietHoaDon);
 		}
 		modelMap.addAttribute("tongSoLuongGioHang", 0);
 		modelMap.addAttribute("gioHang", null);

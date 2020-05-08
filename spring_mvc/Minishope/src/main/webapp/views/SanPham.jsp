@@ -17,7 +17,6 @@
 	<div class="container-fluid background">
 		<jsp:include page="include/MenuMain.jsp"></jsp:include>
 		<div class="row">
-			
 			<div class="col-md-12">
 				<div class="row tieude">
 					<div class="Sort" >
@@ -48,6 +47,9 @@
 						</tbody>
 					</div>
 				</div>
+				<c:if test="${not empty messenger_Search_Error }">
+					<div class="text-control text-center" style="text-algin:center;"><h3>${messenger_Search_Error}</h3></div>	
+				</c:if>
 				<div class="row phan-trang">
 					<nav aria-label="Page navigation example">
 						<ul class="pagination">

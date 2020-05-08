@@ -56,7 +56,6 @@ import com.thong.InterfaceService.ISanPhamService;
 import com.thong.Service.MailSerive;
 import com.thong.Service.NhanVienService;
 
-
 @RestController
 @RequestMapping("Api/")
 @SessionAttributes({ "gioHang", "tongSoLuongGioHang", "SumMoney" })
@@ -76,13 +75,11 @@ public class Ajax {
 	@Autowired
 	private MessageSource mes;
 
-	@Autowired// Asysc
+	@Autowired // Asysc
 	private MailSerive mailSerive;
-	
 
-	
 	@PostMapping(value = "CheckSignUp/", produces = "text/plain;charset=UTF-8")
-	public String LogInProccess(@RequestBody NhanVien nv) {
+	public String logInProccess(@RequestBody NhanVien nv) {
 		if (nv.getTenDangNhap() != null) {
 			if (nv.getTenDangNhap().length() >= 8 && nv.getTenDangNhap().length() <= 20) {
 				if (isValidUserName(nv.getTenDangNhap()) == false) {
@@ -134,7 +131,7 @@ public class Ajax {
 	}
 
 	@PostMapping(value = "ThemGioHang/")
-	public String ThemGioHang(@RequestBody GioHang gioHang, HttpSession session, ModelMap modelMap) {
+	public String themGioHang(@RequestBody GioHang gioHang, HttpSession session, ModelMap modelMap) {
 		List<GioHang> data = (List<GioHang>) session.getAttribute("gioHang");
 		int tonSoLuongSP = 0;
 		if (data == null) {
@@ -150,11 +147,11 @@ public class Ajax {
 				gioHang.setSoLuong(1);
 
 				data.add(gioHang);
-				tonSoLuongSP = TongSoLuong(data);
+				tonSoLuongSP = tongSoLuong(data);
 			} else {
 				int soLuongBanDau = data.get(index).getSoLuong();
 				data.get(index).setSoLuong(soLuongBanDau + 1);
-				tonSoLuongSP = TongSoLuong(data);
+				tonSoLuongSP = tongSoLuong(data);
 			}
 		}
 //complete sum money main	
@@ -162,10 +159,10 @@ public class Ajax {
 		modelMap.addAttribute("SumMoney", sumMoney);
 // set quantity sum products
 		modelMap.addAttribute("tongSoLuongGioHang", tonSoLuongSP);
-		return TongSoLuong(data) + "";
+		return tongSoLuong(data) + "";
 	}
 
-	private int TongSoLuong(List<GioHang> data) {
+	private int tongSoLuong(List<GioHang> data) {
 		int tongSL = 0;
 		for (GioHang gh : data) {
 			tongSL += gh.getSoLuong();
@@ -200,12 +197,12 @@ public class Ajax {
 		}
 		list.get(check).setSoLuong(soLuongReal);
 		modelMap.addAttribute("gioHang", list);
-		modelMap.addAttribute("tongSoLuongGioHang", TongSoLuong(list));
+		modelMap.addAttribute("tongSoLuongGioHang", tongSoLuong(list));
 
 //update sum money main		
 		int sumMoney = SumMoney(list);
 		modelMap.addAttribute("SumMoney", sumMoney);
-		return TongSoLuong(list) + " " + sumMoney;
+		return tongSoLuong(list) + " " + sumMoney;
 
 	}
 
@@ -227,12 +224,12 @@ public class Ajax {
 		int sumMoney = SumMoney((List<GioHang>) session.getAttribute("gioHang"));
 		modelMap.addAttribute("SumMoney", sumMoney);
 
-		modelMap.addAttribute("tongSoLuongGioHang", TongSoLuong(list));
-		return TongSoLuong(list) + " " + sumMoney;
+		modelMap.addAttribute("tongSoLuongGioHang", tongSoLuong(list));
+		return tongSoLuong(list) + " " + sumMoney;
 	}
 
 	@GetMapping(value = "SanPham", produces = "application/json;charset=UTF-8")
-	public List<SanPhamDTO> Pagination(@RequestParam int trangBatDau, @RequestParam int soLuongSP,
+	public List<SanPhamDTO> pagination(@RequestParam int trangBatDau, @RequestParam int soLuongSP,
 			@RequestParam(required = false, defaultValue = "-1") int idDanhMuc,
 			@RequestParam(required = false) String sortBy, @RequestParam(required = false) String typeSort,
 			@RequestParam(required = false) String keyWords) {
@@ -241,53 +238,50 @@ public class Ajax {
 			if (idDanhMuc == Integer.valueOf("-1")) {// get All product
 				if (sortBy == null && typeSort == null) {
 					// paging
-					return sanPhamService.listSanPhamLimit(trangBatDau, soLuongSP, null, null);
+					return sanPhamService.findAll(trangBatDau, soLuongSP, null, null);
 				} else {
 					System.out.println(typeSort + " nulll");
 					// paging + sort
-					return sanPhamService.listSanPhamLimit(trangBatDau, soLuongSP, typeSort, sortBy);
+					return sanPhamService.findAll(trangBatDau, soLuongSP, typeSort, sortBy);
 				}
 			} else { // get Product By Category
 				if (sortBy == null && typeSort == null) {
 					// paging by category
-					return sanPhamService.FindByCategory(idDanhMuc, trangBatDau, soLuongSP, null, null);
+					return sanPhamService.findByCategory(idDanhMuc, trangBatDau, soLuongSP, null, null);
 				} else {
 					// paging + sort by category
-					return sanPhamService.FindByCategory(idDanhMuc, trangBatDau, soLuongSP, typeSort, sortBy);
+					return sanPhamService.findByCategory(idDanhMuc, trangBatDau, soLuongSP, typeSort, sortBy);
 				}
 			}
 		} else {
 			if (sortBy == null && typeSort == null) {
 				// paging by search
-				return sanPhamService.searchByFTS(keyWords, trangBatDau, soLuongSP, null, null);
+				return sanPhamService.search(keyWords, trangBatDau, soLuongSP, null, null);
 			} else {
 				// paging + sort by search
-				return sanPhamService.searchByFTS(keyWords, trangBatDau, soLuongSP, typeSort, sortBy);
+				return sanPhamService.search(keyWords, trangBatDau, soLuongSP, typeSort, sortBy);
 			}
 		}
 	}
 
 	@DeleteMapping("Delete_Product/")
-	public void DeleteProductManager(@RequestBody List<Integer> ob) {
-		System.out.println("da xoa");
-		 sanPhamService.deleteProduct(ob);
+	public void deleteProductManager(@RequestBody List<Integer> ob) {
+		sanPhamService.delete(ob);
 	}
 
 	@PostMapping("create_Post")
-	public String createPost(@RequestBody SanPhamDTO ob) {
-	//	System.out.println("sssssss " + ob.toString());
-		 sanPhamService.createProduct(ob);
-		return "";
+	public void createPost(@RequestBody SanPhamDTO ob) {
+		sanPhamService.create(ob);
 	}
 
 	@PutMapping("update_Post")
-	public void UpdatePost(@RequestBody SanPhamDTO ob) {
-		System.out.println("ss " + ob.toString());
-		sanPhamService.UpdateProduct(ob);
+	public void updatePost(@RequestBody SanPhamDTO ob) {
+		sanPhamService.update(ob);
 	}
 
 	@PostMapping("upLoadFile")
-	public String upLoadFile( MultipartHttpServletRequest request,@RequestParam(required = false) String editor) throws IllegalStateException, IOException {
+	public String upLoadFile(MultipartHttpServletRequest request, @RequestParam(required = false) String editor)
+			throws IllegalStateException, IOException {
 		String part = context.getRealPath("resources/Images/");
 		JSONObject json = new JSONObject();
 		Iterator<String> name = request.getFileNames();
@@ -296,17 +290,17 @@ public class Ajax {
 			File file = new File(part + f.getOriginalFilename());
 			System.out.println(file.getAbsolutePath());
 			f.transferTo(file);
-			json.put("fileName",f.getOriginalFilename());
-			json.put("url","/Minishope/resources/Images/"+f.getOriginalFilename());
+			json.put("fileName", f.getOriginalFilename());
+			json.put("url", "/Minishope/resources/Images/" + f.getOriginalFilename());
 			json.put("uploaded", 1);
 		}
-	//	System.out.println(json.toString());
-	return json.toString();
-		
+		// System.out.println(json.toString());
+		return json.toString();
+
 	}
 
 	@GetMapping("NhanVien/")
-	public List<NhanVienDTO> PaginationUser(@RequestParam int trangBatDau, @RequestParam int soLuongSP,
+	public List<NhanVienDTO> paginationUser(@RequestParam int trangBatDau, @RequestParam int soLuongSP,
 			@RequestParam(required = false) String typeSort, @RequestParam(required = false) String sortBy,
 			@RequestParam(required = false) String keyWords) {
 		System.out.println(soLuongSP + "sss");
@@ -327,14 +321,13 @@ public class Ajax {
 	}
 
 	@DeleteMapping("Delete_User/")
-	public String DeleteUser(@RequestBody List<Integer> idUser) {
-		System.out.println("vao roi");
-		nhanVienService.Delete(idUser);
+	public String deleteUser(@RequestBody List<Integer> idUser) {
+		nhanVienService.delete(idUser);
 		return "";
 	}
 
 	@GetMapping("OneNhanVien/")
-	public NhanVienDTO OneNhanVien(@RequestParam int idUser) {
+	public NhanVienDTO oneNhanVien(@RequestParam int idUser) {
 		return nhanVienService.findOneById(idUser);
 	}
 
@@ -344,17 +337,15 @@ public class Ajax {
 	}
 
 	@PostMapping(value = "addUser/", produces = "application/json;charset=UTF-8")
-	public String SigUpAPI(@RequestBody NhanVien nv) {
+	public String sigUpAPI(@RequestBody NhanVien nv) {
 		JSONObject json = new JSONObject();
 		validUser(nv, json);
-		System.out.println(json.length()+" length json");
 		if (json.length() == 0) {
-			 nhanVienService.saveNhanVien(nv);
-			 System.out.println("da them thanh cong ,,,,,");
-			 json.put("DangKy","true");
+			nhanVienService.save(nv);
+			json.put("DangKy", "true");
 			return json.toString();
 		}
-		json.put("DangKy","false");
+		json.put("DangKy", "false");
 		return json.toString();
 	}
 
@@ -403,49 +394,49 @@ public class Ajax {
 		}
 		return jsonObject;
 	}
-	
+
 	@GetMapping("sendToken")
 	public void sendToken(HttpSession s) {
 		NhanVien nv = (NhanVien) s.getAttribute("user");
-		mailSerive.sendMail( nv.getEmail(), "Verify create account", nv.getToken());
+		mailSerive.sendMail(nv.getEmail(), "Verify create account", nv.getToken());
 	}
-	@PostMapping(value="sendTokenPassword",produces = "text/phain;charset=UTF-8")
-	public String sendTokenPassword(@RequestParam String mail,@RequestParam String userName) {
-		System.out.println( mail + " "+userName);
+
+	@PostMapping(value = "sendTokenPassword", produces = "text/phain;charset=UTF-8")
+	public String sendTokenPassword(@RequestParam String mail, @RequestParam String userName) {
 		NhanVien nv = nhanVienService.findByUserName(userName);
-		if(nv!=null) {
+		if (nv != null) {
 			nv.setTokenRamdom();
 			nv.setTimeTokenFuture(5);
-			nhanVienService.updateNhanVien(nv);
-			mailSerive.sendMail( mail, "Verify create account","Mã code dùng để thay đổi mật khẩu: "+ nv.getToken());
+			nhanVienService.update(nv);
+			mailSerive.sendMail(mail, "Verify create account", "Mã code dùng để thay đổi mật khẩu: " + nv.getToken());
 			return "ok";
-		}else {
+		} else {
 			return "Tên Đăng Nhập không tồn tại";
 		}
 	}
-	@PostMapping(value="changePW",produces = "text/phain;charset=UTF-8")
-	public String checkChangePW(@RequestParam String token,@RequestParam String password) {
+
+	@PostMapping(value = "changePW", produces = "text/phain;charset=UTF-8")
+	public String checkChangePW(@RequestParam String token, @RequestParam String password) {
 		JSONObject json = new JSONObject();
 		NhanVien nv = nhanVienService.findByToken(token.trim());
-		if(nv==null) {
+		if (nv == null) {
 			json.put("token", "Code không đúng");
-		}else if(nv.isAfterTime()) {
+		} else if (nv.isAfterTime()) {
 			json.put("token", "Quá thời hạn đổi mật khẩu vui lòng thực hiện lại");
-		}else {
+		} else {
 			if (password.length() < 6 || password.length() > 20) {
 				json.put("matKhau", mes.getMessage("NhanVien.matKhau.length", null, new Locale("vi")));
 			} else {
 				if (isValidMatKhau(password) == false) {
-					json.put("matKhau", mes.getMessage("NhanVien.matKhau.pattern", null, new Locale("vi")));		
-					}
+					json.put("matKhau", mes.getMessage("NhanVien.matKhau.pattern", null, new Locale("vi")));
+				}
 			}
 		}
-	
+
 		if (json.length() == 0) {
 			nv.setMatKhau(password);
 			nv.setToken("");
-			 nhanVienService.updateNhanVien(nv);
-			 json.put("DangKy","true");
+			json.put("DangKy", "true");
 			return json.toString();
 		}
 		return json.toString();

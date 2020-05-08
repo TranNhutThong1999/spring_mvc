@@ -7,6 +7,5 @@ import org.springframework.stereotype.Service;
 import com.thong.Entity.HoaDon;
 
 public interface IHoaDonService {
-	int ThemHoaDon(HoaDon hoaDon);
-	List<HoaDon> searchHoaDon(int keyWords);
+	int themHoaDon(HoaDon hoaDon);
 }

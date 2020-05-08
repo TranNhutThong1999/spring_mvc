@@ -19,12 +19,12 @@ import com.thong.InterfaceDAO.IHoaDonDAO;
 
 @Repository
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class HoaDonDAO extends AbstractDAO implements IHoaDonDAO {
+public class HoaDonDAO  implements IHoaDonDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Transactional
-	public int ThemHoaDon(HoaDon hoaDon) {
+	public int themHoaDon(HoaDon hoaDon) {
 		Session session = sessionFactory.getCurrentSession();
 		int id=(Integer) session.save(hoaDon);
 		return id;

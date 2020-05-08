@@ -19,7 +19,7 @@ public class ChiTietHoaDonDAO implements IChiTietHoaDonDAO {
 	private SessionFactory sessionFactory;
 
 	@Transactional
-	public boolean ThemChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
+	public boolean themChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
 		Session session = sessionFactory.getCurrentSession();
 		ChiTietHoaDonID id= (ChiTietHoaDonID) session.save(chiTietHoaDon);
 		if (id != null)return true;

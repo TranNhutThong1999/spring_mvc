@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.thong.DAO.NhanVienDAO;
 import com.thong.DTO.NhanVienDTO;
 import com.thong.Entity.ChucVu;
 import com.thong.Entity.NhanVien;
@@ -29,7 +27,7 @@ public class NhanVienService implements INhanVienService {
 		}
 		return new NhanVienDTO(nv);
 	}
-	public int saveNhanVien(NhanVien nv) {
+	public int save(NhanVien nv) {
 	
 		if(nv.getChucVu()==null) {
 			ChucVu cv = new ChucVu();
@@ -39,7 +37,7 @@ public class NhanVienService implements INhanVienService {
 		nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
 		System.out.println("mat khau "+nv.getMatKhau());
 		System.out.println(nv.toString());
-		return nhanVienDAO.saveNhanVien(nv);
+		return nhanVienDAO.save(nv);
 	}
 	public  boolean checkUserName(String userName) {
 		return nhanVienDAO.checkUserName(userName);
@@ -65,8 +63,8 @@ public class NhanVienService implements INhanVienService {
 
 		return listDTO;
 	}
-	public void Delete(List<Integer> idUser) {
-		nhanVienDAO.Delete(idUser);
+	public void delete(List<Integer> idUser) {
+		nhanVienDAO.delete(idUser);
 		
 	}
 	public NhanVienDTO findOneById(int idUser) {
@@ -82,9 +80,9 @@ public class NhanVienService implements INhanVienService {
 		// TODO Auto-generated method stub
 		return nhanVienDAO.findByUserName(userName);
 	}
-	public void updateNhanVien(NhanVien nv) {
+	public void update(NhanVien nv) {
 		nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
-		nhanVienDAO.updateNhanVien(nv);
+		nhanVienDAO.update(nv);
 		
 	}
 	public NhanVien findByToken(String token) {

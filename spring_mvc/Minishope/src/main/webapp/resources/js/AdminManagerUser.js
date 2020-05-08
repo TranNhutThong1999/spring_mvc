@@ -154,7 +154,7 @@ function checkedCSS(){
 				swal({
 					  text: "Vui lòng chọn sản phẩm cần xóa!",
 					  type: "warning",
-					  confirmButtonClass: "btn-danger",
+					  confirmButtonClass: "btn-warning",
 					  confirmButtonText: "ok!",
 					  closeOnConfirm: false
 					})

@@ -1,28 +1,16 @@
 package com.thong.DAO;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thong.DTO.MyUser;
 import com.thong.Entity.ChucVu;
 import com.thong.Entity.NhanVien;
 import com.thong.InterfaceDAO.INhanVienDAO;
@@ -30,7 +18,7 @@ import com.thong.InterfaceDAO.INhanVienDAO;
 @Repository
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
-public class NhanVienDAO extends AbstractDAO implements INhanVienDAO {
+public class NhanVienDAO  implements INhanVienDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -67,12 +55,12 @@ public class NhanVienDAO extends AbstractDAO implements INhanVienDAO {
 	}
 
 	
-	public int saveNhanVien(NhanVien nv) {
+	public int save(NhanVien nv) {
 		Session session = sessionFactory.getCurrentSession();
 		return (Integer) session.save(nv);
 	}
 
-	public void updateNhanVien(NhanVien nv) {
+	public void update(NhanVien nv) {
 		Session session = sessionFactory.getCurrentSession();
 		session.update(nv);
 	}
@@ -130,7 +118,6 @@ public class NhanVienDAO extends AbstractDAO implements INhanVienDAO {
 					.createQuery("from nhanvien where tenDangNhap like '%" + keyWords + "%' or idChucVu = " + value
 							+ " or email like '%" + keyWords + "%' " + order)
 					.setFirstResult(begin).setMaxResults(quantity);
-			;
 		}
 		List<NhanVien> list = query.list();
 		for (NhanVien nhanVien : list) {
@@ -139,7 +126,7 @@ public class NhanVienDAO extends AbstractDAO implements INhanVienDAO {
 		return list;
 	}
 
-	public void Delete(List<Integer> idUser) {
+	public void delete(List<Integer> idUser) {
 		Session session = sessionFactory.getCurrentSession();
 		for (Integer i : idUser) {
 			NhanVien nv = session.get(NhanVien.class, i);

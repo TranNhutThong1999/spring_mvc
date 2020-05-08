@@ -17,9 +17,9 @@ public class DanhMucSanPhamService implements IDanhMucSanPhamService {
 	@Autowired
 	private IDanhMucSanPhamDAO danhMucSanPhamDAO;
 	
-	public List<DanhMucSanPhamDTO> ListDanhMucSanPham() {
+	public List<DanhMucSanPhamDTO> findAll() {
 		// TODO Auto-generated method stub
-		List<DanhMucSanPham> list=danhMucSanPhamDAO.ListDanhMucSanPham();
+		List<DanhMucSanPham> list=danhMucSanPhamDAO.findAll();
 		List<DanhMucSanPhamDTO> listDTO = new ArrayList<DanhMucSanPhamDTO>();
 		for (DanhMucSanPham dmsp : list) {
 			listDTO.add(new DanhMucSanPhamDTO(dmsp));
@@ -27,9 +27,9 @@ public class DanhMucSanPhamService implements IDanhMucSanPhamService {
 		return listDTO;
 	}
 
-	public DanhMucSanPhamDTO findDMSPbyidDanhMuc(int idDanhMuc) {
+	public DanhMucSanPhamDTO findOneByIdDanhMuc(int idDanhMuc) {
 		// TODO Auto-generated method stub
-		return new DanhMucSanPhamDTO(danhMucSanPhamDAO.findDMSPbyidDanhMuc(idDanhMuc));
+		return new DanhMucSanPhamDTO(danhMucSanPhamDAO.findOneByIdDanhMuc(idDanhMuc));
 	}
 	public DanhMucSanPhamDTO convertDTO(DanhMucSanPham dmsp) {
 		return null;

@@ -13,9 +13,9 @@ public class ChiTietHoaDonService implements IChiTietHoaDonService {
 @Autowired
 private IChiTietHoaDonDAO chiTietHoaDonDAO;
 
-public boolean ThemChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
+public boolean themChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
 	// TODO Auto-generated method stub
-	return chiTietHoaDonDAO.ThemChiTietHoaDon(chiTietHoaDon);
+	return chiTietHoaDonDAO.themChiTietHoaDon(chiTietHoaDon);
 }
 
 

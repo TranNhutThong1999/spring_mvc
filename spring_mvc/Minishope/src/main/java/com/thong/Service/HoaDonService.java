@@ -15,13 +15,11 @@ public class HoaDonService implements IHoaDonService {
 @Autowired
 private IHoaDonDAO hoaDonDAO;
 
-public int ThemHoaDon(HoaDon hoaDon) {
-	return hoaDonDAO.ThemHoaDon(hoaDon);
+public int themHoaDon(HoaDon hoaDon) {
+	return hoaDonDAO.themHoaDon(hoaDon);
 }
 
-public List<HoaDon> searchHoaDon(int keyWords) {
-	return hoaDonDAO.searchHoaDon(keyWords);
-}
+
 
 
 }

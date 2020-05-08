@@ -37,26 +37,14 @@ public class HomeController {
 	
 	@GetMapping("Home")
 	public String Default(ModelMap modelMap) {
-		List<SanPhamDTO> listSP = sanPhamService.listSanPhamLimit(0,9,null,null);
+		List<SanPhamDTO> listSP = sanPhamService.findAll(0,9,null,null);
 		modelMap.addAttribute("danhSachSanPham", listSP);
-		
-		List<DanhMucSanPhamDTO> listDanhMuc= danhMucSanPhamService.ListDanhMucSanPham();
+		List<DanhMucSanPhamDTO> listDanhMuc= danhMucSanPhamService.findAll();
 		modelMap.addAttribute("ListDanhMucSanPham", listDanhMuc);
-		
-		//sanPhamService.searchByFTS("100");
 		return "Home";
-	}
-
-	@GetMapping("LogOut")
-	public String LogOutProccess(HttpSession session) {
-		session.removeAttribute("user");
-		session.invalidate();
-		return "redirect:/Home";
-
 	}
 	@GetMapping("/author")
 	public String author(HttpServletRequest request, ModelMap modelMap) {
-		
 		return "redirect:/login?message=author";
 	}
 //	@ResponseBody

@@ -6,7 +6,6 @@ $(document).ready(function(){
 		var idDanhMuc=$("#title-paging").attr("idDanhMuc");
 		var content;
 		var keyWords =$("#keyWords").attr("placeholder");
-		var nameImageUpdate="";
 		var nameImage;
 // paging		
 		$("body").on("click",".page-item",function(){
@@ -202,7 +201,7 @@ $(document).ready(function(){
 				swal({
 					  text: "Vui lòng chọn sản phẩm cần xóa!",
 					  type: "warning",
-					  confirmButtonClass: "btn-danger",
+					  confirmButtonClass: "btn-warning",
 					  confirmButtonText: "ok!",
 					  closeOnConfirm: false
 					})
@@ -219,7 +218,7 @@ $(document).ready(function(){
 						console.log(result)
 							if (result.value){
 								console.log(result.value +"ok")
-							swal("Deleted!", "Your imaginary file has been deleted.", "success");
+							swal("Deleted!", "loading", "success");
 							DeleteProduct()
 							}
 					})
@@ -289,7 +288,7 @@ $(document).ready(function(){
 					$("#content-giaTien").val(value.giaTien);
 					tinymce.activeEditor.setContent(value.moTa);
 					$("#content-idDanhMuc").val(value.idDanhMuc);
-					nameImageUpdate=value.hinhSanPham;
+					nameImage=value.hinhSanPham;
 					if(value.danhCho==="Nam"){
 						$("#Nam").attr("checked",true);
 						$("#Nu").attr("checked",false);
@@ -325,7 +324,7 @@ $(document).ready(function(){
 						swal({
 							  text: checkSubmit()+"!",
 							  type: "warning",
-							  confirmButtonClass: "btn-danger",
+							  confirmButtonClass: "btn-warning",
 							  confirmButtonText: "ok!",
 							  closeOnConfirm: false
 							})
@@ -335,14 +334,12 @@ $(document).ready(function(){
 							  text: "Your will not be able to recover this imaginary file!",
 							  type: "warning",
 							  showCancelButton: true,
-							  confirmButtonClass: "btn-danger",
-							  confirmButtonText: "Yes, update it!",
+							  confirmButtonClass: "btn-warning",
+							  confirmButtonText: "Yes, add it!",
 							  closeOnConfirm: false
 							}).then(function(result) {
 									if (result.value) {
-									swal({
-										type:"success",
-										});
+										swal("add!", "loading", "success");
 									addProduct()
 									}
 							})
@@ -359,7 +356,6 @@ $(document).ready(function(){
 					 var arr=[];
 					 dataSanPham["hinhSanPham"]=nameImage ;
 					 dataSanPham["idSanPham"]=$("#content-tenSanPham").attr("data-idSP");
-						console.log(dataSanPham)
 					$("#chiTietSanPham .CTSP-content").each(function(){
 						 var object={};
 						object["idMauSanPham"]=$(this).find("select[name ='mauSanPham']").val();
@@ -418,8 +414,6 @@ $(document).ready(function(){
 				$("#fileName").change(function(e){
 					file= e.target.files;
 					nameImage=e.target.files[0].name;
-					alert("name"+ nameImage)
-					console.log(file)
 				})// end change file image
 				
 // remove one detail product
@@ -433,7 +427,7 @@ $(document).ready(function(){
 					swal({
 						  text: checkSubmit()+"!",
 						  type: "warning",
-						  confirmButtonClass: "btn-danger",
+						  confirmButtonClass: "btn-warning",
 						  confirmButtonText: "ok!",
 						  closeOnConfirm: false
 						})
@@ -448,13 +442,13 @@ $(document).ready(function(){
 						  closeOnConfirm: false
 						}).then(function(result) {
 								if (result.value) {
-								swal("Deleted!", "Your imaginary file has been deleted.", "success");
+								swal("Updated!", "loading", "success");
 								updateProduct()
 								}
 						})
 				}
 		})
-//function cập nhật sản phẩm 
+//function update product 
 		function updateProduct(){
 				var dataform = $("#form-themSP").serializeArray();
 				var dataSanPham={};
@@ -464,6 +458,7 @@ $(document).ready(function(){
 				 console.log(dataSanPham)
 				 var arr=[];
 				 dataSanPham["hinhSanPham"]=nameImage;
+				 console.log("update "+dataSanPham["hinhSanPham"])
 				dataSanPham["idSanPham"]=$("#content-tenSanPham").attr("data-idSP");
 					
 				$("#chiTietSanPham .CTSP-content").each(function(){
@@ -496,10 +491,10 @@ $(document).ready(function(){
 					contentType:"application/json",
 					data:JSON.stringify(dataSanPham),
 					success:function(value){
-					//	window.location.href="/Minishope/Admin-SanPham/?message=update_OK";
+						window.location.href="/Minishope/Admin-SanPham/?message=update_OK";
 					},
 					error:function(value){
-				//		window.location.href="/Minishope/Admin-SanPham/?message=error_system";
+						window.location.href="/Minishope/Admin-SanPham/?message=error_system";
 					},
 				})
 		

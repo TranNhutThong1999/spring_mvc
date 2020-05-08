@@ -66,7 +66,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<input  id="content-tenSanPham" class="form-control" data-idSP="0" type="text" name ="tenSanPham">
 		</div>
 		<div id="giaTien">
-			<label for="giaTien" > Giá Tiền(VND) <span>*</span></label>
+			<label for="giaTien" > Giá Tiền <span>*</span></label>
 			<input id="content-giaTien"  class="form-control" type="text" name ="giaTien" >
 		</div>
 		<div id="danhMuc">
@@ -94,7 +94,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<label for="hinhSanPham" >Hình Sản Phẩm</label>
 			<div class="custom-file" >
 			    <input type="file" class="custom-file-input" id="fileName" name ="hinhSanPham">
-			    <label class="custom-file-label" for="fileName">Choose file...</label>
+			    <label  class="custom-file-label" for="fileName">Choose file...</label>
 			    <div class="invalid-feedback">Example invalid custom file feedback</div>
 			 </div>
 		</div>

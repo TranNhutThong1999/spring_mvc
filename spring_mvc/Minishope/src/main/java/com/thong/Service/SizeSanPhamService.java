@@ -19,6 +19,4 @@ public class SizeSanPhamService implements ISizeSanPhamService {
 		return sizeSanPhamDAO.findAll();
 	}
 
-	
-
 }

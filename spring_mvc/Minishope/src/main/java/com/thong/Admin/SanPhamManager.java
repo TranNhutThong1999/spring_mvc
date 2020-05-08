@@ -45,8 +45,8 @@ public class SanPhamManager {
 
 	@GetMapping
 	public String Default(ModelMap modelMap, ServletRequest re) {
-		List<SanPhamDTO> listAll = sanPhamService.listSanPhamLimit(-1, 0, null,null);
-		List<SanPhamDTO> list = sanPhamService.listSanPhamLimit(0, numberShows, null,null);
+		List<SanPhamDTO> listAll = sanPhamService.findAll(-1, 0, null,null);
+		List<SanPhamDTO> list = sanPhamService.findAll(0, numberShows, null,null);
 		int du = listAll.size() % numberShows;
 		int in = listAll.size() / numberShows;
 		if (du > 0) {
@@ -59,7 +59,7 @@ public class SanPhamManager {
 			modelMap.addAttribute("message", map.get("message"));
 			modelMap.addAttribute("alert", map.get("alert"));
 		}
-		modelMap.addAttribute("ListDanhMucSanPham", danhMucSanPhamService.ListDanhMucSanPham());
+		modelMap.addAttribute("ListDanhMucSanPham", danhMucSanPhamService.findAll());
 		modelMap.addAttribute("sizeSanPham", sizeSanPhamService.findAll());
 		modelMap.addAttribute("mauSanPham", mauSanPhamService.findAll());
 		modelMap.addAttribute("numberPagination", in);
@@ -69,9 +69,9 @@ public class SanPhamManager {
 	}
 
 	@GetMapping("DanhMuc/{idDanhMuc}")
-	public String SanPhamByDanhMuc(@PathVariable int idDanhMuc, ModelMap modelMap) {
-		List<SanPhamDTO> listAllSP = sanPhamService.FindByCategory(idDanhMuc, -1, 0, null,null);
-		List<SanPhamDTO> list = sanPhamService.FindByCategory(idDanhMuc, 0, numberShows, null,null);
+	public String sanPhamByDanhMuc(@PathVariable int idDanhMuc, ModelMap modelMap) {
+		List<SanPhamDTO> listAllSP = sanPhamService.findByCategory(idDanhMuc, -1, 0, null,null);
+		List<SanPhamDTO> list = sanPhamService.findByCategory(idDanhMuc, 0, numberShows, null,null);
 		int du = listAllSP.size() % numberShows;
 		int in = listAllSP.size() / numberShows;
 		if (du > 0) {
@@ -87,9 +87,9 @@ public class SanPhamManager {
 		return "admin/index";
 	}
 	@GetMapping("Search")
-	public String SearchSanPham(@RequestParam String keyWords, ModelMap modelMap) {
-		List<SanPhamDTO> listAllSP = sanPhamService.searchByFTS(keyWords,-1,0,null,null);
-		List<SanPhamDTO> list = sanPhamService.searchByFTS(keyWords,0,numberShows,null,null);
+	public String searchSanPham(@RequestParam String keyWords, ModelMap modelMap) {
+		List<SanPhamDTO> listAllSP = sanPhamService.search(keyWords,-1,0,null,null);
+		List<SanPhamDTO> list = sanPhamService.search(keyWords,0,numberShows,null,null);
 		int du = listAllSP.size() % numberShows;
 		int in = listAllSP.size() / numberShows;
 		if (du > 0) {

@@ -15,12 +15,13 @@ import com.thong.InterfaceDAO.IDanhMucSanPhamDAO;
 
 @Repository
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Transactional
 public class DanhMucSanPhamDAO implements IDanhMucSanPhamDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Transactional
-	public List<DanhMucSanPham> ListDanhMucSanPham() {
+	@SuppressWarnings("unchecked")
+	public List<DanhMucSanPham> findAll() {
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			List<DanhMucSanPham> list = session.createQuery("from danhmucsanpham").list();
@@ -30,8 +31,7 @@ public class DanhMucSanPhamDAO implements IDanhMucSanPhamDAO {
 			return null;
 		}
 	}
-	@Transactional
-	public DanhMucSanPham findDMSPbyidDanhMuc(int idDanhMuc) {
+	public DanhMucSanPham findOneByIdDanhMuc(int idDanhMuc) {
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			DanhMucSanPham list = (DanhMucSanPham) session.createQuery("from danhmucsanpham dm where dm.idDanhMuc=:idDanhMuc ").setParameter("idDanhMuc", idDanhMuc).getSingleResult();

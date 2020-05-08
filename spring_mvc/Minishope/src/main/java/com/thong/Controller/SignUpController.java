@@ -65,7 +65,7 @@ public class SignUpController {
 		if (nv != null) {
 			if (nv.getToken().equals(token)) {
 				nv.setEnabled(true);
-				nhanVienService.saveNhanVien(nv);
+				nhanVienService.save(nv);
 				s.removeAttribute("user");
 				return "redirect:/login?message=verify_success";
 			} else {

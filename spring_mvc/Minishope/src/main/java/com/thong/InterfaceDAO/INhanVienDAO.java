@@ -7,7 +7,7 @@ import com.thong.Entity.NhanVien;
 public interface INhanVienDAO {
 	NhanVien checkLogin(String userName, String password);
 
-	int saveNhanVien(NhanVien nv);
+	int save(NhanVien nv);
 
 	boolean checkUserName(String userName);
 
@@ -15,7 +15,7 @@ public interface INhanVienDAO {
 	
 	List<NhanVien> findAll(int begin,int quantity,String sortBy,String typeSort);
 	
-	void Delete (List<Integer> idUser);
+	void delete (List<Integer> idUser);
 	
 	NhanVien findOneById(int idUser);
 	
@@ -23,7 +23,7 @@ public interface INhanVienDAO {
 	
 	NhanVien findByUserName(String userName);
 	
-	 void updateNhanVien(NhanVien nv);
+	 void update(NhanVien nv);
 	 
 	 NhanVien findByToken(String token);
 }

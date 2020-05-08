@@ -32,9 +32,8 @@ public class SanPhamController {
 
 	@GetMapping
 	public String Default(ModelMap modelMap) {
-		List<SanPhamDTO> listAll = sanPhamService.listSanPhamLimit(-1, numberShows, null,null);
-		List<SanPhamDTO> list = sanPhamService.listSanPhamLimit(0, numberShows, null,null);
-		System.out.println(listAll.size()+" control");
+		List<SanPhamDTO> listAll = sanPhamService.findAll(-1, numberShows, null,null);
+		List<SanPhamDTO> list = sanPhamService.findAll(0, numberShows, null,null);
 		int du = listAll.size() % numberShows;
 		int in = listAll.size() / numberShows;
 		if (du > 0) {
@@ -48,9 +47,9 @@ public class SanPhamController {
 
 
 	@GetMapping("DanhMuc/{idDanhMuc}")
-	public String SanPhamByDanhMuc(@PathVariable int idDanhMuc, ModelMap modelMap) {
-		List<SanPhamDTO> listAllSP = sanPhamService.FindByCategory(idDanhMuc, -1, 0, null,null);
-		List<SanPhamDTO> list = sanPhamService.FindByCategory(idDanhMuc, 0, numberShowsCategory, null,"giaTien");
+	public String sanPhamByDanhMuc(@PathVariable int idDanhMuc, ModelMap modelMap) {
+		List<SanPhamDTO> listAllSP = sanPhamService.findByCategory(idDanhMuc, -1, 0, null,null);
+		List<SanPhamDTO> list = sanPhamService.findByCategory(idDanhMuc, 0, numberShowsCategory, null,"giaTien");
 		int du = listAllSP.size() % numberShowsCategory;
 		int in = listAllSP.size() / numberShowsCategory;
 		if (du > 0) {
@@ -60,7 +59,7 @@ public class SanPhamController {
 		modelMap.addAttribute("numberPagination", in);
 		modelMap.addAttribute("listSanPham", list);
 		modelMap.addAttribute("soLuongSP", numberShowsCategory);
-		DanhMucSanPhamDTO dm = danhMucSanPhamService.findDMSPbyidDanhMuc(idDanhMuc);
+		DanhMucSanPhamDTO dm = danhMucSanPhamService.findOneByIdDanhMuc(idDanhMuc);
 		modelMap.addAttribute("danhMuc", dm);
 		return "SanPham";
 	}

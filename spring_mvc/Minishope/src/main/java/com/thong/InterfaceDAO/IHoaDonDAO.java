@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 import com.thong.Entity.HoaDon;
 
 public interface IHoaDonDAO {
-	int ThemHoaDon(HoaDon hoaDon);
+	int themHoaDon(HoaDon hoaDon);
 }

@@ -27,27 +27,21 @@ public class SanPhamService implements ISanPhamService {
 	@Autowired
 	private ISanPhamDAO sanPhamDAO;
 
-	public List<SanPhamDTO> listSanPhamLimit(int begin, int quantity, String typeSort, String sortBy) {
+	public List<SanPhamDTO> findAll(int begin, int quantity, String typeSort, String sortBy) {
 		List<SanPham> list = null;
-		list = sanPhamDAO.listSanPhamLimit(begin, quantity, typeSort, sortBy);
+		list = sanPhamDAO.findAll(begin, quantity, typeSort, sortBy);
 		System.out.println(list.size());
 		List<SanPhamDTO> listDTO = new ArrayList<SanPhamDTO>();
 		for (SanPham sp : list) {
 			listDTO.add(convertDTO(sp));
-			//System.out.println(convertDTO(sp).toString());
 		}
 		return listDTO;
 	}
 
-	public SanPhamDTO ChiTietSanPham(int idSanPham) {
-		// TODO Auto-generated method stub
-		SanPham sp = sanPhamDAO.ChiTietSanPham(idSanPham);
-		return convertDTO(sp);
-	}
 
-	public List<SanPhamDTO> FindByCategory(int idDanhMuc, int begin, int quantity, String typeSort, String sortBy) {
+	public List<SanPhamDTO> findByCategory(int idDanhMuc, int begin, int quantity, String typeSort, String sortBy) {
 		// TODO Auto-generated method stub
-		List<SanPham> list = sanPhamDAO.FindByCategory(idDanhMuc, begin, quantity, typeSort, sortBy);
+		List<SanPham> list = sanPhamDAO.findByCategory(idDanhMuc, begin, quantity, typeSort, sortBy);
 		List<SanPhamDTO> listDTO = new ArrayList<SanPhamDTO>();
 		for (SanPham sp : list) {
 			listDTO.add(convertDTO(sp));
@@ -55,9 +49,9 @@ public class SanPhamService implements ISanPhamService {
 		return listDTO;
 	}
 
-	public List<SanPhamDTO> searchByFTS(String keyWords, int begin, int quantity, String typeSort, String sortBy) {
+	public List<SanPhamDTO> search(String keyWords, int begin, int quantity, String typeSort, String sortBy) {
 		// TODO Auto-generated method stub
-		List<SanPham> list = sanPhamDAO.searchByFTS(keyWords, begin, quantity, typeSort, sortBy);
+		List<SanPham> list = sanPhamDAO.search(keyWords, begin, quantity, typeSort, sortBy);
 		List<SanPhamDTO> listDTO = new ArrayList<SanPhamDTO>();
 		for (SanPham sp : list) {
 			listDTO.add(convertDTO(sp));
@@ -65,18 +59,31 @@ public class SanPhamService implements ISanPhamService {
 		return listDTO;
 	}
 
-	private SanPhamDTO convertDTO(SanPham sp) {
-		SanPhamDTO spDTO = new SanPhamDTO(sp);
-		Set<ChiTietSanPham> set = sp.getDanhSachCTSPham();
-		Set<ChiTietSanPhamDTO> setDTO = new HashSet<ChiTietSanPhamDTO>();
-		for (ChiTietSanPham ctsp : set) {
-			setDTO.add(new ChiTietSanPhamDTO(ctsp));
+	public void delete(List<Integer> idSanPham) {
+		for (Integer i : idSanPham) {
+			sanPhamDAO.delete(i);
 		}
-		spDTO.setDanhSachCTSPham(setDTO);
+	}
+
+	public void create(SanPhamDTO sp) {
+		SanPham s= convertEntity(sp);
+		System.out.println("DTO "+s);
+		Integer i=sanPhamDAO.create(s);
+	}
+
+	public SanPhamDTO findOneById(int idSanPham) {
+		SanPham sp = sanPhamDAO.findOneById(idSanPham);
+		SanPhamDTO spDTO = convertDTO(sp);
 		System.out.println(spDTO.toString());
 		return spDTO;
 	}
 
+	public void update(SanPhamDTO spDTO) {
+		SanPham sp = convertEntity(spDTO);
+		sanPhamDAO.update(sp);
+	}
+
+//convert to sp
 	private SanPham convertEntity(SanPhamDTO spDTO) {
 		SanPham sp = new SanPham();
 		sp.setIdSanPham(spDTO.getIdSanPham());
@@ -113,31 +120,15 @@ public class SanPhamService implements ISanPhamService {
 		sp.setDanhSachCTSPham(set);
 		return sp;
 	}
-
-	public void deleteProduct(List<Integer> idSanPham) {
-		for (Integer i : idSanPham) {
-			sanPhamDAO.deleteProduct(i);
+//convert to DTO
+	private SanPhamDTO convertDTO(SanPham sp) {
+		SanPhamDTO spDTO = new SanPhamDTO(sp);
+		Set<ChiTietSanPham> set = sp.getDanhSachCTSPham();
+		Set<ChiTietSanPhamDTO> setDTO = new HashSet<ChiTietSanPhamDTO>();
+		for (ChiTietSanPham ctsp : set) {
+			setDTO.add(new ChiTietSanPhamDTO(ctsp));
 		}
-	}
-
-	public void createProduct(SanPhamDTO sp) {
-		// TODO Auto-generated method stub
-
-		SanPham s= convertEntity(sp);
-		System.out.println("DTO "+s);
-		Integer i=sanPhamDAO.createProduct(s);
-	}
-
-	public SanPhamDTO findOneById(int idSanPham) {
-		SanPham sp = sanPhamDAO.findOneById(idSanPham);
-		//System.out.println("dao  "+sp.toString());
-		SanPhamDTO spDTO = convertDTO(sp);
-		System.out.println(spDTO.toString());
+		spDTO.setDanhSachCTSPham(setDTO);
 		return spDTO;
-	}
-
-	public void UpdateProduct(SanPhamDTO spDTO) {
-		SanPham sp = convertEntity(spDTO);
-		sanPhamDAO.UpdateProduct(sp);
 	}
 }
