@@ -1,0 +1,131 @@
+*{
+	margin:0px;
+	padding: 0px;
+}
+
+.tooltip-z {
+    position: absolute;
+    width: 176px;
+    border-top: 2px solid #bc3e16;
+    display: none;
+}
+
+a.dropdown-item {
+    color: white;
+    background-color: black;
+    padding: 7px 22px;
+}
+
+.scroll img {
+    width: 84px;
+}
+
+#menu .active-gioHang {
+    width: 23px;
+    background: red;
+    position: absolute;
+    top: -2px;
+    right: 6px;
+    height: 22px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.background #menu img {
+    height: 100%;
+}
+
+button.navbar-toggler.d-lg-none {
+    background-color: #c4bdbd!important;
+    height: 17px;
+}
+
+button.navbar-toggler.d-lg-none.collapsed {
+    background-color: #887878!important;
+    height: 24px;
+}
+
+.bg-primary {
+    height: 104px;
+    transition: 0.6s;
+    width: 100%;
+    background: none! important;
+    color: white;
+    position: fixed;
+}
+
+.scroll {
+    height: 59px;
+    background-color: #000000c9!important;
+    /* transition: 0.5s; */
+    z-index: 2;
+}
+
+.background nav#menu {
+    background: black!important;
+    padding: 0px;
+    position: unset;
+    height: 63px;
+}
+
+a.navbar-brand {
+    margin-left: 5%;
+}
+
+.scroll a.navbar-brand {
+}
+
+.background #menu a.navbar-brand {
+    height: 100%;
+}
+
+.menu img {
+    margin-left: 55%;
+    height: 43px;
+}
+
+.center li.nav-item {
+    margin: 0% 11px;
+}
+
+
+.nav-link{
+    position: relative;
+    color:white !important;
+}
+
+i.fa.fa-car {
+    font-size: 23px;
+}
+.center{
+    
+margin-left: 6%! important;
+    
+margin-left: 22%;
+}
+ul.nav.justify-content-center {
+    width: 25%;
+}
+.right li.nav-item:first-child {
+    margin-right: -15px;
+    display: flex;
+}
+.logout {
+    border-left: 1px solid white;
+}
+li.nav-item.dropdown:hover .tooltip-z {
+    display: block;
+    animation: showAction 0.3s;
+    z-index:5;
+}
+@keyframes showAction {
+	from{
+		transform: translateY(15px);;
+	}	
+	to{
+		transform:translateY(0px);
+	}
+}
