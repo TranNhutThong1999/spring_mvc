@@ -1,0 +1,260 @@
+*{
+	margin:0px;
+}
+
+input.form-control {
+    border: 1px solid #70171773;
+}
+
+input#content-soLuongSP {
+    border: 1px solid #70171773;
+}
+
+td#DanhMuc:hover {
+    color: blue;
+}
+tr {
+    border-bottom: 1px solid #0f0e0e0f;
+}
+b {
+    font-size: 25px;
+}
+tr.active {
+    color: #0b0b0bfa!important;
+    background-color: #4742421a;
+}
+.required {
+    font-size: 12px;
+    color: red;
+}
+
+#form-themSP span {
+    color: red;
+}
+
+span.tox-icon.tox-tbtn__icon-wrap svg {
+    width: 24px!important;
+}
+
+
+
+textarea#content-moTa {
+    border-radius: 9px;
+}
+
+.boder {
+    border: 1px solid #3225252b;
+    height: 71px;
+    border-radius: 9px;
+}
+
+.remove-ctsp {
+    font-size: 18px;
+    width: 25px;
+    color: #1e1e1ec2;
+    position: absolute;
+    right: 0px;
+    text-align: center;
+}
+
+.remove-ctsp:hover {
+    color: red;
+}
+
+#content-listSP button.btn.btn-warning {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+button.btn.btn-warning.addCTSP {
+    padding: 7px;
+    float: right;
+    font-size: 12px;
+    border-radius: 5px;
+    color: black;
+}
+
+select.form-control {
+    width: 100%;
+}
+
+input#fileName {
+    color: #ac4949;
+    width: 100% !important;
+    background-color: #3f3f3f1c;
+}
+
+div#chiTietSanPham {
+    max-width: 100%;
+    display: block;
+}
+
+
+select.form-control {
+    border: 1px solid #70171773;
+    border-radius: 9px;
+    width: 130px;
+}
+
+.CTSP-content {
+    position: relative;
+    margin-bottom: 6px;
+    width: 100%;
+    display: inline-block;
+}
+
+.themSanPham .nut {
+    border-radius: 9px;
+    margin: 26px 0px;
+}
+
+button#btn-themChiTietSP {
+    font-size: 12px;
+    display: block;
+    /* float: right; */
+}
+
+div#SoLuong {
+    display: inline-block;
+    margin-bottom: 7px;
+    width: 33%;
+}
+
+div#SizeSanPham {
+    margin: 0px 36px;
+    display: inline-block;
+    margin-bottom: 7px;
+}
+
+div#MauSanPham {
+    margin-left: 4px;
+    display:  inline-block;
+    margin-bottom: 7px;
+}
+
+label {}
+
+h4.title-ctsp {
+    margin-top: 18px;
+}
+
+.phan-trang nav {
+    margin-left: 20px;
+}
+
+input[type="radio"] {
+    margin-bottom: 15px;
+}
+
+textarea#w3mission {
+    border: 1px solid #911313;
+}
+
+select#select {
+    height: 30px;
+    font-size: 13px;
+    border: 1px solid #911313;
+}
+
+d {
+    border: 1px solid #911313;
+}
+
+
+
+.themSanPham {
+}
+
+.themSanPham h2 {
+    font-weight: 600;
+    text-align: center;
+    color: red;
+}
+
+div#danhCho {
+    margin-top: 18px;
+}
+
+div#hinhAnh {
+    margin-top: 18px;
+}
+
+div#moTa {
+    margin-top: 18px;
+}
+
+div#giaTien {
+    margin-top: 18px;
+}
+
+label {
+    margin: 0px!important;
+}
+
+div#tenSP {
+    margin-bottom: 10px;
+}
+
+div#danhMuc {
+    width: 26%;
+}
+
+div#danhMuc {
+    margin-top: 18px;
+}
+
+label {
+    /* display: inline; */
+    width: 100%;
+}
+
+input[type="text"]:first-child {
+}
+
+.main-admin {
+    /* justify-content: center; */
+    width: 84%;
+    display: flex;
+}
+
+.themSanPham {
+    margin-left: 32px;
+    width: 87%;
+    /* max-width: 40%; */
+    color: blue;
+}
+
+.show {
+    max-width: 50%;
+}
+
+
+button.btn.btn-outline-success.my-2.my-sm-0 {
+    font-size: 13px;
+    padding: 3px;
+    border: 1px solid #11a307;
+}
+
+input.form-control.mr-sm-2 {
+    margin-right: 0px !important;
+    height: 27px;
+    border: 1px solid #00b8ff;
+    font-size: 15px;
+}
+
+form.form-inline.my-2.my-lg-0 {
+    line-height: 40px;
+    display: inline;
+}
+
+th.sort-title:hover {
+    color: red;
+    background-color: #e12e5794;
+}
+
+#clone{
+	display:none;
+}
+.hide{
+	display:none
+}

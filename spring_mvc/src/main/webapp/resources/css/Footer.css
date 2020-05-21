@@ -1,0 +1,30 @@
+.row.row-4 {
+    letter-spacing: 0.05em;
+    font-weight: 100;
+    background-color: black;
+    color: #ffffff99;
+}
+.row {
+    margin: 0px;
+    padding: 0px;
+}
+.row-4 .col-md-3 {
+    margin-right: 65px;
+    padding-top: 20px;
+    margin-bottom: 33px;
+}
+.row-4 img {
+    width: 111px;
+}
+.row-4 .block {
+    margin-bottom: 36px;
+}
+h5, h7 {
+    display: block;
+}
+.row-4 .btn.btn-primary {
+    width: 180px;
+    display: inline-block;
+    padding: 0px;
+    font-size: 13px;
+}

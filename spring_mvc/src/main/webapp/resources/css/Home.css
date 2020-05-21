@@ -1,0 +1,236 @@
+*{
+	margin:0px;
+	padding: 0px;
+}
+:root {
+  --animate-delay: 2s;
+}
+h5,h7 {
+    display: block;
+}
+
+.row-4 .block {
+    margin-bottom: 36px;
+}
+
+.block-2 {
+    margin-bottom: 25px;
+}
+
+.row-4 img {
+    width: 111px;
+}
+
+.col-md-3 {
+    margin-bottom: 33px;
+}
+
+.row-4 .col-md-3 {
+    margin-right: 65px;
+    padding-top: 20px;
+}
+
+
+.col-md-3.wow.flipInY {
+    margin: 0px 0px;
+    margin-bottom: 34px;
+}
+
+.row-3-body a {
+    width: 100%;
+}
+
+
+img#poster {
+    width: 1332px;
+    margin: auto;
+    position: relative;
+}
+
+span {
+    color: #efff00;
+}
+
+.mes {
+    padding: 5px;
+    POSITION: absolute;
+    color: red;
+    background: #000000ad;
+    right: 640px;
+    font-size: 19px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.block_4 h2 {
+    font-weight: 100;
+    font-size: 24px;
+}
+
+.btn.btn-primary {padding: 0px 69px;font-size: 13px;}
+
+textarea {
+    display: block;
+    margin: auto;
+}
+
+textarea {
+    margin: 0px;
+}
+
+.row.block_4 {
+    margin-top: 42px;
+    color: white;
+    background-color: black;
+}
+
+.container.block_3 {
+    margin-top: 42px;
+}
+
+
+.block_3 .tieude {
+    color: #ea175f;
+    margin-bottom: 45px;
+}
+
+
+
+.col-md-4 {
+    margin: 10px 0px;
+    text-align: center;
+}
+
+
+h5.card-title {
+    margin-bottom: 7px;
+    text-align: center;
+}
+
+.card {border: none;-moz-box-shadow: 0px 0px 53px 4px rgba(0,0,0,0.49);}
+
+img.card-img-top {
+    width: 100%;
+    margin: 0px;
+}
+
+
+
+img.hover {
+    transform: scale(1.5);
+}
+
+img.card-img-top.item-image {
+    border-radius: 100%;
+    height: 50px;
+    width: 50px;
+}
+
+.tieude h1 {
+    font-size: 36px;
+}
+
+.tieude {
+    margin: 20px 0px;
+    text-align: center;
+    display: block;
+}
+
+.block_2 .h1 {
+    margin: 10px 0px;
+}
+
+.block_2 .col-md-4 {
+    margin: 31px 0%;
+}
+
+.block_2 p {
+    color: #0000008a;
+    text-align: center;
+}
+
+.block_2 .h1 {
+    text-align: center;
+    font-size: 35px;
+    font-weight: 600;
+}
+
+.icon {
+    font-size: 67px;
+    text-align: center;
+}
+
+.row.block_2 {
+    height: auto;
+    margin: 0px;
+}
+
+.row {
+    margin: 0px;
+    padding: 0px;
+}
+
+.row.row-4 {
+    letter-spacing: 0.05em;
+    font-weight: 100;
+    background-color: black;
+    color: #ffffff99;
+}
+
+.row.title.text-center.text-control.d-block {
+    margin-bottom: 35px;
+}
+
+.row.row-3-body {
+    padding: 0px 60px;
+}
+
+.container-fluid {
+    padding: 0px!important;
+    margin: 0px!important;
+}
+
+.content button {
+    border-radius: 15px;
+    border: none;
+    padding: 2px 9px;
+    background-color: yellow;
+    color: red;
+    -webkit-box-shadow: 0px 3px 0px 2px rgba(0,0,0,0.1), 0px 6px 0px 4px rgba(0,0,0,0.1), 0px 9px 0px 6px rgba(0,0,0,0.1), 0px 12px 0px 8px rgba(0,0,0,0.1), 0px 15px 0px 10px rgba(0,0,0,0.1), 0px 18px 0px 12px rgba(0,0,0,0.1), 0px 21px 0px 14px rgba(0,0,0,0.1), 0px 24px 0px 16px rgba(0,0,0,0.1), 0px 27px 0px 18px rgba(0,0,0,0.1), 0px 30px 0px 20px rgba(0,0,0,0.1), 5px 5px 15px 5px rgba(0,0,0,0);
+    box-shadow: 0px 3px 0px 2px rgba(0,0,0,0.1), 0px 6px 0px 4px rgba(0,0,0,0.1), 0px 9px 0px 6px rgba(205, 12, 12, 0.1), 0px 12px 0px 8px rgba(0,0,0,0.1), 0px 15px 0px 10px rgba(84, 255, 10, 0.1), 0px 18px 0px 12px rgba(0,0,0,0.1), 0px 21px 0px 14px rgba(0,0,0,0.1), 0px 24px 0px 16px rgba(69, 0, 246, 0.1), 0px 27px 0px 18px rgba(0,0,0,0.1), 0px 30px 0px 20px rgba(0,0,0,0.1), 5px 5px 15px 5px rgba(0,0,0,0);
+}
+.row.block_1 {
+    padding-top: 83px;
+}
+.content {
+    position: absolute;
+    text-align: center;
+    top: 350px;
+    left: 640px;
+    background-color: #ff000073;
+}
+
+.content h1 {
+    text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FF2D95 0px 0px 20px, #FF2D95 0px 0px 30px, #FF2D95 0px 0px 40px, #FF2D95 0px 0px 50px, #FF2D95 0px 0px 75px;
+    color: red;
+}
+
+.block-small {
+    height: 754px;
+   
+}
+
+.block-small {
+    width: 100%;
+    height: 754px;
+    background: url(../Images/asian-women.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

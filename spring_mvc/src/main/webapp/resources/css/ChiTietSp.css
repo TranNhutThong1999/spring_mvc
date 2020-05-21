@@ -1,0 +1,93 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.mes-box {
+    top: 112px;
+    position: absolute;
+    z-index: 5;
+    right: 0px;
+}
+
+.box p {
+    font-size: 15px;
+    font-weight: 100;
+}
+
+.box {
+    border: none;
+    margin-bottom: 1px;
+    width: 309px;
+}
+
+.container-fluid.background {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+.back {
+    float: right;
+    font-size: 33px;
+    color: blue;
+}
+
+
+.CTSP {
+    padding: 5px 0px;
+}
+
+
+.trai h4 {
+    padding: 7px 3px;
+    border: 1px solid #c6bcbc;
+    font-size: 22px;
+    font-weight: 800;
+    color: blue;
+    margin-bottom: 4px;
+}
+
+
+.giatien {
+    margin-bottom: 8px;
+    font-weight: 900;
+    font-size: 31px;
+}
+
+.tenhinh {
+    margin-top: -7px;
+    margin-bottom: 5px;
+    color: red;
+    font-size: 38px;
+}
+
+.hinh img {
+    margin-bottom: 8px;
+    -webkit-box-shadow: -1px 0px 25px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 0px 25px 0px rgba(0,0,0,0.75);
+    box-shadow: -1px 0px 25px 0px rgba(0,0,0,0.75);
+    border-radius: 14px;
+    width: 100%;
+}
+#message-box{
+	display:none;
+}
+
+.hinh img.image-item {
+    width: 82px;
+    margin-right: 2px;
+}
+
+.hinh img.image-item:hover {
+    transform: scale(1.05);
+}
+
+th {
+    max-width: 158px!important;
+}
+span {
+    color: #ff0808;
+}
+td.soLuong {
+    color: #00b807;
+}

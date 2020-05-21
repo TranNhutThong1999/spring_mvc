@@ -1,0 +1,101 @@
+*{
+	margin:0px
+}
+
+tr {
+    border-bottom: 1px solid #0f0e0e0f;
+}
+
+tr.active {
+    color: #0b0b0bfa!important;
+    background-color: #4742421a;
+}
+.active-ban{
+	color: red!important;
+	background-color: #f1101021;
+}
+
+
+label {}
+
+.form-group {
+    margin-bottom: 0px!important;
+}
+
+ul.pagination {
+    margin-left: 16px;
+}
+
+a.page-link {}
+
+button#nut-search {
+    font-size: 13px;
+    border: 1px solid;
+    padding: 3px;
+}
+
+select.form-control {
+    width: 100%;
+    border-radius: 9px;
+}
+
+input.form-control {
+}
+
+input#keyWords {
+    margin-right: 0px !important;
+    height: 27px;
+    border: 1px solid #00b8ff;
+    font-size: 15px;
+}
+
+form {
+    margin-top: 18px;
+}
+
+.form-group label {
+    color: blue;
+    margin-bottom: 2px;
+}
+
+.la {
+    margin-bottom: 15px;
+    color: red!important;
+    font-size: 12px;
+}
+
+.require {
+    font-size: 14px;
+    color: red;
+}
+
+.tile {
+    font-size: 29px;
+}
+
+.main-User {
+    width: 85%;
+    float: right;
+}
+
+.content {
+}
+
+.ProccessUser {display: none;margin-top: 19px;margin: auto;width: 61%;}
+
+th {
+    width: 16%;
+}
+
+form#form-search {
+    display: inline-block;
+}
+
+.content {
+}
+
+.action {
+    margin-left: auto!important;
+    max-width: 100%;
+}
+
