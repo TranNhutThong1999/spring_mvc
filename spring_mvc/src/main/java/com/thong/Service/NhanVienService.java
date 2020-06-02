@@ -28,8 +28,8 @@ public class NhanVienService implements INhanVienService {
 		return new NhanVienDTO(nv);
 	}
 
-	public int save(NhanVien nv) {
-
+	public int save(NhanVienDTO n ) {
+		NhanVien nv= new NhanVien(n);
 		if (nv.getChucVu() == null) {
 			ChucVu cv = new ChucVu();
 			cv.setIdChucVu(3);
@@ -38,7 +38,6 @@ public class NhanVienService implements INhanVienService {
 		nv.setEnabled(true);
 		nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
 		System.out.println("mat khau " + nv.getMatKhau());
-		System.out.println(nv.toString());
 		return nhanVienDAO.save(nv);
 	}
 
@@ -96,9 +95,10 @@ public class NhanVienService implements INhanVienService {
 		return nhanVienDAO.findByUserName(userName);
 	}
 
-	public void update(NhanVien nv) {
+	public void update(NhanVienDTO n) {
+		NhanVien nv = new NhanVien(n);
 		if (nv.getChucVu().getTenChucVu().equals("ROLE_admin")) {
-			nv.setEnabled(true);
+			nv.setNonBanned(true);
 		}
 		//nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
 		nhanVienDAO.update(nv);
@@ -114,5 +114,58 @@ public class NhanVienService implements INhanVienService {
 		// TODO Auto-generated method stub
 		return nhanVienDAO.findOneById(idUser);
 	}
+
+	public NhanVienDTO findByUserNameDTO(String userName) {
+		// TODO Auto-generated method stub
+		NhanVien nv =nhanVienDAO.findByUserName(userName);
+		if(nv==null) {
+			return null;
+		}
+		return new NhanVienDTO(nv);
+	}
+
+	public NhanVien findByTokenFB(String tokenFB) {
+		// TODO Auto-generated method stub
+		NhanVien nv = nhanVienDAO.findByTokenFB(tokenFB);
+		if(nv==null) {
+			return null;
+		}
+			return nv;
+		
+	}
+
+	public boolean saveUserFB(NhanVien nv) {
+		// TODO Auto-generated method stub
+		nv.setEnabled(true);
+		nv.setNonBanned(true);
+		ChucVu cv = new ChucVu();
+			cv.setIdChucVu(3);
+		nv.setChucVu(cv);
+		Integer i=nhanVienDAO.saveUserFB(nv);
+		if(i!=0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public NhanVienDTO findByTokenDTO(String token) {
+		// TODO Auto-generated method stub
+		NhanVien nv = nhanVienDAO.findByToken(token);
+		if(nv==null) {
+			return null;
+		}
+		return new NhanVienDTO(nv);
+	}
+
+	public void update(NhanVien nv) {
+		// TODO Auto-generated method stub
+		if (nv.getChucVu().getTenChucVu().equals("ROLE_admin")) {
+			nv.setEnabled(true);
+		}
+		//nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
+		nhanVienDAO.update(nv);
+	}
+
 
 }

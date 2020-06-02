@@ -16,10 +16,10 @@
     <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
     	   <intercept-url pattern="/Admin-User/"  access="hasRole('ROLE_admin')"/>
    		  <intercept-url pattern="/admin/*"  access="hasRole('ROLE_admin')"/>
-   		 <intercept-url pattern="/Admin-SanPham/" access="hasRole('ROLE_admin')"/> 
-   		 <intercept-url pattern="/login" access="permitAll" />
+   		  <intercept-url pattern="/Admin-SanPham/" access="hasRole('ROLE_admin')"/> 
+   		  <intercept-url pattern="/login" access="permitAll" />
    		  <intercept-url pattern="/Api/*" access="permitAll" />
-   		<intercept-url pattern="/resources/**" access="permitAll"/>
+   	      <intercept-url pattern="/resources/**" access="permitAll"/>
    	 	  <access-denied-handler error-page="/author"/>   
        <form-login 	 login-page="/login"
                      username-parameter="username"

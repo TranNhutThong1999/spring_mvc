@@ -71,7 +71,6 @@ public class NhanVienDAO  implements INhanVienDAO {
 
 			NhanVien nv = (NhanVien) session.createQuery("from nhanvien where tenDangNhap = '" + userName + "'")
 					.getSingleResult();
-			System.out.println(nv.toString() + "555");
 			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -151,7 +150,6 @@ public class NhanVienDAO  implements INhanVienDAO {
 			return nv;
 		}
 	}
-	@Transactional
 	public NhanVien findByToken(String token) {
 		NhanVien nv = null;
 		try {
@@ -164,5 +162,22 @@ public class NhanVienDAO  implements INhanVienDAO {
 			System.out.println("null DAO");
 			return nv;
 		}
+	}
+	public NhanVien findByTokenFB(String tokenFB) {
+		NhanVien nv = null;
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			nv = (NhanVien) session.createQuery("from nhanvien nv where nv.tokenFB = '" + tokenFB + "'")
+					.getSingleResult();
+			return nv;
+
+		} catch (Exception e) {
+			System.out.println("null DAO");
+			return nv;
+		}
+	}
+	public Integer saveUserFB(NhanVien nv) {
+		Session session = sessionFactory.getCurrentSession();
+		return (Integer) session.save(nv);
 	}
 }

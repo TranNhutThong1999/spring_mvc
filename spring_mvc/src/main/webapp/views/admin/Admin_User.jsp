@@ -77,8 +77,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			   <div class="form-group">
 							  <label for="exampleFormControlSelect1">Role(*)</label>
 							    <select  name ="idChucVu"class="custom-select">
-							    <c:forEach var="role" items="${roles}">
-							      <option value="${role.getIdChucVu()}">${role.getTenChucVu()}</option>
+							    <c:forEach var="role" items="${roles}" varStatus="i">
+								    <c:if test="${i.index==2}">
+								   		 <option selected="selected" value="${role.getIdChucVu()}">${role.getTenChucVu()}</option>
+								    </c:if>
+							    	<c:if test="${i.index!=2}">
+							     		 <option  value="${role.getIdChucVu()}">${role.getTenChucVu()}</option>
+							      </c:if>
 							        </c:forEach>
 							    </select>
 			  </div>

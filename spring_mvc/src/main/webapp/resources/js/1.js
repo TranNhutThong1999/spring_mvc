@@ -29,8 +29,10 @@ $(window).ready(function() {
 				contentType:"Application/json",
 				data : JSON.stringify(input) ,
 				success : function(value) {
-					$("#labelUserNameSignUp").text(value);
-					if (value !== "") {
+					console.log(value)
+					console.log(value["tenDangNhap"])
+					$("#labelUserNameSignUp").text(value["tenDangNhap"]);
+					if (value["tenDangNhap"] !== "") {
 						userSubmit = false;
 					} else {
 						userSubmit = true;
@@ -58,8 +60,8 @@ $(window).ready(function() {
 				contentType:"Application/json",
 				data : JSON.stringify(input) ,
 				success : function(value) {
-					$("#labelEmail").text(value);
-					if (value !== "") {
+					$("#labelEmail").text(value["email"]);
+					if (value["email"] !== "") {
 						emailSubmit = false;
 					} else {
 						emailSubmit = true;
@@ -84,8 +86,8 @@ $(window).ready(function() {
 				contentType:"Application/json",
 				data : JSON.stringify(input) ,
 				success : function(value) {
-					$("#lablePassword").text(value);
-					if (value!== "") {
+					$("#lablePassword").text(value["matKhau"]);
+					if (value["matKhau"]!== "") {
 						passwordSubmit = false;
 					} else {
 						passwordSubmit = true;

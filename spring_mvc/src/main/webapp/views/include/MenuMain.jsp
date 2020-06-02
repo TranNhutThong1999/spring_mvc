@@ -50,8 +50,8 @@
 			<security:authorize access="isAuthenticated()">
 			<li class="nav-item">
 					<a class="nav-link active"
-						href=''> <security:authentication property="principal.username"/> </a>	
-					<a class="nav-link active logout"
+						href=''> <security:authentication property="principal.hoTen"/> </a>	
+					<a class="nav-link active logout" onclick="FBlogout();"
 						href='<c:url value="/logout"></c:url>'> thoat </a>
 			</li>
 			</security:authorize>

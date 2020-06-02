@@ -23,6 +23,17 @@ public class MyUser extends User {
 		// TODO Auto-generated constructor stub
 	}
 
+	public MyUser(String username, String password, Collection<? extends GrantedAuthority> authorities, String hoTen,
+			String diaChi, String gioiTinh, String email, String cMND, String soDT) {
+		super(username, password, authorities);
+		this.hoTen = hoTen;
+		this.diaChi = diaChi;
+		this.gioiTinh = gioiTinh;
+		this.email = email;
+		CMND = cMND;
+		this.soDT = soDT;
+	}
+
 	public String getHoTen() {
 		return hoTen;
 	}

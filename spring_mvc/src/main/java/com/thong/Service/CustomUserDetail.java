@@ -28,9 +28,10 @@ public class CustomUserDetail implements UserDetailsService{
 			System.out.println("ban");
 			throw new UsernameNotFoundException("user not found");
 		}
+		
 		List<GrantedAuthority> authortity = new ArrayList<GrantedAuthority>();
 		authortity.add(new SimpleGrantedAuthority(nv.getChucVu().getTenChucVu()));
-		MyUser user = new MyUser(nv.getTenDangNhap(), nv.getMatKhau(), true, true, true, nv.isEnabled(), authortity);
+		MyUser user = new MyUser(nv.getTenDangNhap(), nv.getMatKhau(), nv.isEnabled(), true, true, nv.isNonBanned(), authortity);
 		user.setCMND(nv.getCMND());
 		user.setDiaChi(nv.getDiaChi());
 		user.setEmail(nv.getEmail());
@@ -38,10 +39,7 @@ public class CustomUserDetail implements UserDetailsService{
 		user.setHoTen(nv.getHoTen());
 		user.setSoDT(nv.getSoDT());
 		System.out.println(user.toString());
-//		if(user.isAccountNonLocked()==false) {
-//			System.out.println("new LockedException");
-//			throw new LockedException("user was locked");
-//		}
+
 		return user;
 	}
 	

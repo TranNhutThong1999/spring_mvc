@@ -40,6 +40,8 @@ public class SanPhamDTO {
 	public void setTongSoLuong(int tongSoLuong) {
 		this.tongSoLuong = tongSoLuong;
 	}
+	
+
 	public int getIdSanPham() {
 		return idSanPham;
 	}

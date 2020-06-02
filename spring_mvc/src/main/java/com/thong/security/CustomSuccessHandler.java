@@ -14,6 +14,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 
 import com.thong.DTO.MyUser;
 import com.thong.Service.CustomUserDetail;
@@ -24,13 +25,13 @@ import com.thong.Util.SecurityUtil;
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler  {
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	
-	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+			Authentication authentication,ModelMap m) throws IOException, ServletException {
 		String targetUrl = determineTargetUrl(authentication);
 		if (response.isCommitted()) {
 			return;
 		}
+		m.addAttribute("token", "12544");
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 		

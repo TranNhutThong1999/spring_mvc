@@ -67,10 +67,10 @@
 	                            <div class="panel-body">
 	                                <fieldset>
 	                                <form>
-	                              	  <div class="form-group">
+	                              	 <!--  <div class="form-group">
 	                                        <input id="token" class="form-control input-lg code" placeholder="code" name="token" type="text">
 	                                   		<label for="code" style="color:black;">Code send to your mail</label>
-	                                    </div>
+	                                    </div> -->
 	                                    <div class="form-group">
 	                                        <input id="forgot-newPassword" class="form-control input-lg" placeholder="New Password" name="password" type="password">
 	                                    </div>
@@ -145,33 +145,145 @@
 				</div>
 				</div>
 			</form>
+			<div id="status">
+</div>
+<fb:login-button class="fb"
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
+<jsp:include page="include/Scrip.jsp"></jsp:include>
+<script>
 
+ 	
+	function checkLoginState() {
+		  FB.getLoginStatus(function(response) {
+		    statusChangeCallback(response);
+		  });
+		}
+	
+ 	function statusChangeCallback(response) {
+                let token= response.authResponse.accessToken;
+                let userID=response.authResponse.userID;
+                if (response.status === 'connected') {
+                    // Logged into your app and Facebook.
+                    FB.api('/me?fields=name,email,picture,first_name,last_name', function (res) {
+                    	 var object={
+        						token:token,
+        						userID:userID,
+        						lastname:res.last_name,
+        						firstname:res.first_name,
+        						//picture:res.picture,
+        						email:res.email
+        				}
+                    	// console.log(object)
+                    	 sendInforToServer(object)
+                    });
+                    
+                   
+                } else {
+                    document.getElementById('status').innerHTML = 'Please log ' +
+                      'into this app.';
+                }
+            }
+
+	 function sendInforToServer(object){
+		console.log(object)
+		var xhr = new XMLHttpRequest();
+		var url = "/Minishope/Api/login-Facebook";
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		 xhr.onreadystatechange = function () {
+		   /*  if (xhr.readyState === 4 && xhr.status === 200) {
+		      window.location.href="/Minishope/Home"
+		        console.log(json.email + ", " + json.password);
+		    } */
+		    var value=xhr.responseText;
+		   if(value==="failure"){
+			   console.log(value)
+			   document.getElementsByClassName("messenger")[0].innerHTML="Tai khoan bi khoa";
+			   document.getElementsByClassName("messenger")[0].className += " alert-danger size";
+		   }else{
+			   window.location.href="/Minishope/Home";
+		   }
+		}; 
+		var data = JSON.stringify(object);
+		xhr.send(data);
+		
+	}  
+
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '1585078791643590',
+	      cookie     : true,
+	      xfbml      : true,
+	      version    : 'v7.0'
+	    });
+	      
+	    FB.AppEvents.logPageView();   
+	      
+	  };
+
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "https://connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+</script>
 		</div>
 	</div>
-	<jsp:include page="include/Scrip.jsp"></jsp:include>
+	
 	<script src='<c:url value="/resources/js/1.js" />'  type="text/javascript" ></script>
 	<script type="text/javascript">
 
 		$(window).ready(function(){
+			var dem=30;
+			
 			$("#pwdModal").hide();
+			$('#inputEmail').hide();
 			$("#inputPassword").hide();
+			$("#back-changePassword").hide();
+			var token=""
+				getUrlVars();// Run code
+			
+			function getUrlVars() {
+			
+			    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			        console.log(key)
+			       if(key==="token" & key!==null){
+			    	   token= value
+			    	   $('#pwdModal').modal('show');
+			    	   $("#inputPassword").show();
+			    	   $("#back-changePassword").show();
+			       }else{
+			    	   
+			       }
+			    });
+		}
+			
+			
 			$("#clickForget").click(function(){
 				//$("#login").hide();
 				$("#pwdModal").show();
+				 $('#inputEmail').show();
 			})
 			$("#back-sendToken").click(function(){
 				$("#pwdModal").show();
 				$("#inputPassword").hide();
 				$("#inputEmail").show();
 			})
-			$("#back-changePassword").click(function(){
+			
+			 $("#back-changePassword").click(function(){
 				$("#pwdModal").show();
 				$("#inputPassword").show();
 				$("#inputEmail").hide();
-			})
+			}) 
+			
 // submit send token
 				$("#timer").hide();	
-			$("#btn-mailSendToken").click(function(){
+			$("#btn-mailSendToken").click(function(e){
+				
 				var mailSendToken =$("#mailSendToken").val();
 				var userNameSendToken=$("#userNameSendToken").val();
 				console.log(mailSendToken +" "+userNameSendToken)
@@ -187,11 +299,13 @@
 						},
 						success:function(value){
 							if(value==="ok"){
-								$("#inputPassword").show();
+							/* 	$("#inputPassword").show();
 								$("#inputEmail").hide();
 								$("#btn-mailSendToken").hide()
 								$("#message-mail").html("")
-								$("#message-mail").removeClass("red")
+								$("#message-mail").removeClass("red") */
+								$("#message-mail").html("Vui long check your email")
+								$("#message-mail").addClass("red")
 								decrement()
 							}else{
 								$("#message-mail").html(value)
@@ -202,19 +316,23 @@
 			}
 		})
 // time down
-			var dem=30;
+			
 			function decrement(){
 				 a=setInterval(timer, 1000);
 			}
 			function timer(){
 					dem--;
+					document.getElementById("btn-mailSendToken").disabled =true;
 					$("#timer").show();
 					$("#dem").html(dem+"s");
+					console.log(dem)
 					if(dem===0){
-						clearInterval(a)
+						document.getElementById("btn-mailSendToken").disabled =false;
+						console.log("demmm =0")
+						clearInterval(a);
 						$("#timer").hide();
 						$("#btn-mailSendToken").show()
-						
+					dem=30;
 					}
 			}
 //validate token
@@ -222,7 +340,7 @@
 			$("#btn-changePassword").click(function(){
 				var newPW=$("#forgot-newPassword").val();
 				var preNewPS=$("#forgot-prePassword").val();
-				var token=$("#token").val();
+				let tokenT=token;
 				console.log(newPW +" "+preNewPS)
 				if(newPW==="" | preNewPS==="" | token===""){
 					$("#message-password").html("Không được bỏ trống")
@@ -234,7 +352,7 @@
 							type:"post",
 							data:{
 								password:newPW,
-								token:token
+								token:tokenT
 							},
 							success:function(value){
 								

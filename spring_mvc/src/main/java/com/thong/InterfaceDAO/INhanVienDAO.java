@@ -26,4 +26,8 @@ public interface INhanVienDAO {
 	 void update(NhanVien nv);
 	 
 	 NhanVien findByToken(String token);
+	 
+	 NhanVien findByTokenFB(String tokenFB);
+	 
+	 Integer saveUserFB(NhanVien nv);
 }

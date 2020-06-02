@@ -52,12 +52,7 @@ public class LoginController {
 		}
 		return "LogIn";
 	}
-	@PostMapping("login-Facebook")
-	public String LoginByFaceBook(HttpServletRequest re) {
-		System.out.println(re.getParameter("code"));
-		
-		return "";
-	}
+	
 //	@PostMapping
 //	public String LogInProccess(@RequestParam String username, @RequestParam String password,
 //			 ModelMap modelMap) {
@@ -73,16 +68,11 @@ public class LoginController {
 //		}
 //		return "redirect:/Home/";
 //	}
-//	@PostMapping
-//	public String ForgetPassword(@RequestParam String username) {
-//		NhanVien nv = nhanVienService.findByUserName(username);
-//		if(nv!=null) {
-//			mailSerive.sendMail(, "Forget Password", "");
-//			return "redirect:/login?message=forget_OK";
-//		}else {
-//			return "redirect:/login?message=user_desable";
-//		}
-//	}
+	@PostMapping("fb")
+	public String ForgetPassword(HttpServletRequest r) {
+		System.out.println("vao fb");
+		return null;
+	}
 	
 	static boolean isValid(String email) {
 		String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";

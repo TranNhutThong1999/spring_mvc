@@ -60,6 +60,13 @@
 		
 	<jsp:include page="include/Footer.jsp"></jsp:include>
 	<jsp:include page="include/Scrip.jsp"></jsp:include>
+	<script type="text/javascript">
+	function FBlogout(){
+			FB.logout(function(response) {
+		  // user is now logged out
+		});
+	}
+	</script>
 <script type="text/javascript">
 		$(document).ready(function() {
 			var typeSort="";

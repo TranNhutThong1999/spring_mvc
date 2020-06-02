@@ -12,11 +12,13 @@ import java.util.Locale;
 
 import javax.persistence.metamodel.SetAttribute;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.apache.tomcat.jni.Local;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,11 +27,21 @@ import org.hibernate.hql.spi.id.inline.IdsClauseBuilder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -49,6 +61,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.sun.istack.NotNull;
+import com.thong.DTO.MyUser;
 import com.thong.DTO.NhanVienDTO;
 import com.thong.DTO.SanPhamDTO;
 import com.thong.Entity.GioHang;
@@ -82,16 +96,24 @@ public class Ajax {
 
 	@Autowired // Asysc
 	private MailSerive mailSerive;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
+	
+	 @Autowired
+	private UserDetailsService userDetailsService;
 
-	@PostMapping(value = "CheckSignUp/", produces = "text/plain;charset=UTF-8")
-	public String logInProccess(@RequestBody @Valid NhanVien nv, BindingResult bindingResult) {
-		System.out.println(nv.toString());
+	@PostMapping(value = "CheckSignUp/", produces = "Application/json;charset=UTF-8")
+	public String logInProccess(@RequestBody @Valid NhanVienDTO nv, BindingResult bindingResult) {
+		JSONObject json = new JSONObject();
+		json.put("tenDangNhap", "");
+		json.put("email", "");
+		json.put("matKhau", "");
 		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getAllErrors().get(0).getDefaultMessage());
-			return bindingResult.getAllErrors().get(0).getDefaultMessage();
+			for (FieldError o : bindingResult.getFieldErrors()) {
+				json.put(o.getField(), o.getDefaultMessage());
+			}
+			return json.toString();
 		}
 //		if (nv.getTenDangNhap() != null) {
 //			if (nv.getTenDangNhap().length() >= 8 && nv.getTenDangNhap().length() <= 20) {
@@ -353,63 +375,21 @@ public class Ajax {
 	}
 
 	@PostMapping(value = "addUser/", produces = "application/json;charset=UTF-8")
-	public String sigUpAPI(@RequestBody NhanVien nv) {
-		System.out.println(nv.toString());
+	public String sigUpAPI(@RequestBody @Valid NhanVienDTO nv, BindingResult bindingResult) {
 		JSONObject json = new JSONObject();
-		validUser(nv, json);
-		if (json.length() == 0) {
-			nhanVienService.save(nv);
-			json.put("DangKy", "true");
+		if (bindingResult.hasErrors()) {
+			for (FieldError o : bindingResult.getFieldErrors()) {
+				json.put(o.getField(), o.getDefaultMessage());
+			}
+			json.put("DangKy", "false");
+			System.out.println("errr");
 			return json.toString();
 		}
-		json.put("DangKy", "false");
+		System.out.println(nv.toString());
+		nhanVienService.save(nv);
+		json.put("DangKy", "true");
 		return json.toString();
-	}
 
-	private JSONObject validUser(NhanVien nv, JSONObject jsonObject) {
-//valid ten dang nhap
-		if (nv.getTenDangNhap() != null && !nv.getTenDangNhap().equals("")) {
-			System.out.println(!nv.getTenDangNhap().equals(""));
-			if (nv.getTenDangNhap().length() >= 8 && nv.getTenDangNhap().length() <= 20) {
-				if (isValidUserName(nv.getTenDangNhap()) == false) {
-					jsonObject.put("tenDangNhap",
-							mes.getMessage("NhanVien.tenDangNhap.pattern", null, new Locale("vi")));
-				} else {
-					boolean check = nhanVienService.checkUserName(nv.getTenDangNhap());
-					if (check == true) {
-						jsonObject.put("tenDangNhap",
-								mes.getMessage("NhanVien.tenDangNhap.exist", null, new Locale("vi")));
-					}
-				}
-			} else {
-				jsonObject.put("tenDangNhap", mes.getMessage("NhanVien.tenDangNhap.length", null, new Locale("vi")));
-			}
-		} else {
-			jsonObject.put("tenDangNhap", mes.getMessage("NhanVien.tenDangNhap.NotNull", null, new Locale("vi")));
-		}
-//valid email
-//		if (nv.getEmail() != null && !nv.getEmail().equals("")) {
-//			System.out.println(nv.getEmail());
-//			if (isValidEmail(nv.getEmail()) == false) {
-//				jsonObject.put("email", mes.getMessage("NhanVien.email.pattern", null, new Locale("vi")));
-//			}
-//		} else {
-//			jsonObject.put("email", mes.getMessage("NhanVien.email.NotNull", null, new Locale("vi")));
-//		}
-// valid mat khau
-		if (nv.getMatKhau() != null && !nv.getMatKhau().equals("")) {
-			if (nv.getMatKhau().length() < 6 || nv.getMatKhau().length() > 20) {
-				jsonObject.put("matKhau", mes.getMessage("NhanVien.matKhau.length", null, new Locale("vi")));
-			} else {
-				System.out.println(isValidMatKhau(nv.getMatKhau()));
-				if (isValidMatKhau(nv.getMatKhau()) == false) {
-					jsonObject.put("matKhau", mes.getMessage("NhanVien.matKhau.pattern", null, new Locale("vi")));
-				}
-			}
-		} else {
-			jsonObject.put("matKhau", mes.getMessage("NhanVien.matKhau.NotNull", null, new Locale("vi")));
-		}
-		return jsonObject;
 	}
 
 	@GetMapping("sendToken")
@@ -420,12 +400,12 @@ public class Ajax {
 
 	@PostMapping(value = "sendTokenPassword", produces = "text/phain;charset=UTF-8")
 	public String sendTokenPassword(@RequestParam String mail, @RequestParam String userName) {
-		NhanVien nv = nhanVienService.findByUserName(userName);
+		NhanVienDTO nv = nhanVienService.findByUserNameDTO(userName);
 		if (nv != null) {
 			nv.setTokenRamdom();
 			nv.setTimeTokenFuture(5);
 			nhanVienService.update(nv);
-			mailSerive.sendMail(mail, "Verify create account", "Mã code dùng để thay đổi mật khẩu: " + nv.getToken());
+			mailSerive.sendMail(mail, "Verify create account", "https://localhost:8443/Minishope/login?token=" + nv.getToken());
 			return "ok";
 		} else {
 			return "Tên Đăng Nhập không tồn tại";
@@ -434,6 +414,7 @@ public class Ajax {
 
 	@PostMapping(value = "changePW", produces = "text/phain;charset=UTF-8")
 	public String checkChangePW(@RequestParam String token, @RequestParam String password) {
+		System.out.println(token);
 		JSONObject json = new JSONObject();
 		NhanVien nv = nhanVienService.findByToken(token.trim());
 		if (nv == null) {
@@ -453,6 +434,7 @@ public class Ajax {
 		if (json.length() == 0) {
 			nv.setMatKhau(bCrypt.encode(password));
 			nv.setToken("");
+			nhanVienService.update(nv);;
 			json.put("DangKy", "true");
 			return json.toString();
 		}
@@ -460,14 +442,63 @@ public class Ajax {
 	}
 
 	@PutMapping("HandleBan")
-	public void handleBan(@RequestBody String json,HttpServletRequest re,HttpServletResponse res) {
+	public void handleBan(@RequestBody String json, HttpServletRequest re, HttpServletResponse res) {
 		System.out.println(json);
 		JSONObject j = new JSONObject(json);// idNhanVien
 
-		NhanVien nv = nhanVienService.findOneById2(Integer.valueOf(j.getString("idNhanVien")));
-		nv.setEnabled(Boolean.parseBoolean(j.getString("isEnabled")));
+		NhanVienDTO nv = nhanVienService.findOneById(Integer.valueOf(j.getString("idNhanVien")));
+		nv.setNonBanned(Boolean.parseBoolean(j.getString("isNonBanned")));
 		nhanVienService.update(nv);
-	//	SecurityUtil.logOutUser(nv.getTenDangNhap(), re, res);
+		// SecurityUtil.logOutUser(nv.getTenDangNhap(), re, res);
 	}
-	
+
+	@PostMapping(value = "login-Facebook", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> LoginByFaceBook(@RequestBody String json) {
+		boolean result=false;
+		JSONObject o = new JSONObject(json);
+		NhanVien nv = nhanVienService.findByUserName(o.getString("userID"));
+		if (nv == null) {
+			// create user
+			System.out.println("vao");
+			NhanVien nvFB = new NhanVien();
+			nvFB.setTenDangNhap(o.getString("userID"));
+			nvFB.setHoTen( o.getString("firstname")+ " "+ o.getString("lastname"));
+			nvFB.setJWToken(o.getString("token"));
+			nvFB.setEmail(o.getString("email"));
+			nvFB.setEnabled(true);
+			nvFB.setNonBanned(true);
+			nhanVienService.saveUserFB(nvFB);
+			 createPrincical(nvFB);
+			 return new ResponseEntity<String>("ok",HttpStatus.OK);
+		} else {
+			// create principal
+			result =createPrincical(nv);
+			if(result==false) {
+				System.out.println("bedddddd");
+				return new ResponseEntity<String>("failure",HttpStatus.BAD_REQUEST);
+			}
+			 return new ResponseEntity<String>("ok",HttpStatus.OK);
+		}
+
+	}
+
+	private boolean createPrincical(NhanVien nv) {
+		
+		
+		List<GrantedAuthority> listAuthor = new ArrayList<GrantedAuthority>();
+		listAuthor.add(new SimpleGrantedAuthority("ROLE_user"));
+		MyUser user;
+			user = new MyUser(nv.getTenDangNhap(), "", nv.isEnabled(), true, true, nv.isNonBanned(), listAuthor);
+		
+		user.setEmail(nv.getEmail());
+		user.setHoTen(nv.getHoTen());
+	//	UserDetails userDetails = user;
+		if(user.isEnabled()==false || user.isAccountNonLocked()==false) {
+			return false;
+		}
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
+				user.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		return true;
+	}
 }

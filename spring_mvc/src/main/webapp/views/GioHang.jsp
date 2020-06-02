@@ -100,6 +100,13 @@
 	<script src='<c:url value="/resources/sweetalert/sweetalert2.min.js" />'
 		type="text/javascript"></script>
 	<script type="text/javascript">
+			function FBlogout(){
+					FB.logout(function(response) {
+				  // user is now logged out
+				});
+			}
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".updateSoLuong").click(function(){
 				var tien= $(this).parent().parent().find(".giatiensp").text();

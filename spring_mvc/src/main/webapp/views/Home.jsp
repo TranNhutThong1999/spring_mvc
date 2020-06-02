@@ -29,7 +29,7 @@
 						<div class="icon">
 							<i class="fa fa-bandcamp" aria-hidden="true"></i>
 						</div>
-						<div class="h1">CHẤTLƯỢNG</div>
+						<div class="h1">CHẤTLƯỢNG ${token}</div>
 						<p>Chúng tôi cam kết sẻ đem đến cho các bạn chất lượng sản
 							phẩm tốt nhất</p>
 					</div>
@@ -73,9 +73,14 @@
 		<!-- xong row -->
 	</div>
 	<jsp:include page="include/Footer.jsp"></jsp:include>
+		<jsp:include page="include/Scrip.jsp"></jsp:include>
 <script src="<c:url value="/resources/js/Home.js" />"></script>
 	<script type="text/javascript">
-	
+	function FBlogout(){
+			FB.logout(function(response) {
+		  // user is now logged out
+		});
+	}
 	</script>
 	
 	

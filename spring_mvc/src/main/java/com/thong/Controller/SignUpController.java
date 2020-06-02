@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.thong.DTO.NhanVienDTO;
 import com.thong.Entity.NhanVien;
 import com.thong.InterfaceService.INhanVienService;
 import com.thong.Service.MailSerive;
@@ -45,7 +46,7 @@ public class SignUpController {
 	}
 
 	@PostMapping
-	public String SignUpProccess(@ModelAttribute @Valid NhanVien nv, BindingResult bindingResult, ModelMap modelMap) {
+	public String SignUpProccess(@ModelAttribute @Valid NhanVienDTO nv, BindingResult bindingResult, ModelMap modelMap) {
 		System.out.println(nv.toString());
 		if (bindingResult.hasErrors()) {
 			System.out.println(bindingResult.getAllErrors().get(0).getDefaultMessage());
@@ -62,7 +63,7 @@ public class SignUpController {
 
 	@PostMapping("/confirm-account")
 	public String confirm(@RequestParam String token, ModelMap modelMap, HttpSession s) {
-		NhanVien nv = (NhanVien) s.getAttribute("user");
+		NhanVienDTO nv =  (NhanVienDTO) s.getAttribute("user");
 		if (nv != null) {
 			if (nv.getToken().equals(token)) {
 				nhanVienService.save(nv);

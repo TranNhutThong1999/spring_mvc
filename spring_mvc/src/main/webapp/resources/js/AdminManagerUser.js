@@ -312,7 +312,7 @@ function checkedCSS(){
 				$(this).attr("data-enabled",data)
 			}
 			let ob={
-					isEnabled:data,
+					isNonBanned:data,
 					idNhanVien:idNhanVien
 			}
 			enabled.html(value)
