@@ -39,7 +39,7 @@ public class SanPhamController {
 		if (du > 0) {
 			in = in + 1;
 		}
-		modelMap.addAttribute("sanpham", "Sản Phẩm");
+		modelMap.addAttribute("sanpham", "Sản phẩm");
 		modelMap.addAttribute("numberPagination", in);
 		modelMap.addAttribute("danhSachSanPham", list);
 		modelMap.addAttribute("soLuongSP", numberShows);

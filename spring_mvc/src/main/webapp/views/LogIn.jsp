@@ -97,8 +97,7 @@
 </div>
 	<div id="login" class="container-fluid background">
 		<div class="card" style="width: 18rem;">		
-			<form  id="idsignin" method="post" action='<c:url value="/j_spring_security_check" />'>
-			<security:csrfInput />
+			<form  id="idsignin">  <%-- method="post" action='<c:url value="/j_spring_security_check" />' --%>
 				<div class="card-body sigin" >
 					<h5 class="card-title">Sign in</h5>
 						<div class="alert alert-${alert} messenger" style="text-align:center; color:#2a950f" role="alert">
@@ -133,7 +132,7 @@
 								    <input type="checkbox" class="custom-control-input" name="remember-me" id="remeberme" >
 								    <label class="custom-control-label" for="remeberme">Remember me</label>
 								  </div>	
-					<button id="nutSigIn" type="submit" class="btn btn-warning">Login</button>
+					<button id="nutSigIn" type="button" class="btn btn-warning">Login</button>
 					<!--  <button id="nutAjax" type=button class="btn btn-warning">ajax</button> -->
 					
 				</div>
@@ -261,7 +260,32 @@
 			       }
 			    });
 		}
-			
+			$('#nutSigIn').click(function(e){
+			//	e.preventdefault();
+				let name=$("#userName").val();
+				let password =$("#password").val();
+				$.ajax({
+					url:"/Minishope/Api/login",
+					method:"post",
+					data:{
+						username:name,
+						password:password
+					},
+					success:function(value){
+						sessionStorage.setItem('token', value);
+						window.location.href="/Minishope/Home/";
+					},
+					error:function(err){
+						console.log(err)
+					},
+					statusCode: {
+					    400: function() {
+					    	window.location.href="/Minishope/login?message=failure";
+					    },
+					}
+				})
+				
+			}) 
 			
 			$("#clickForget").click(function(){
 				//$("#login").hide();

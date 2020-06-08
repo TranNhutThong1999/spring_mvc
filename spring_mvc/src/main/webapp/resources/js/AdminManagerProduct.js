@@ -236,6 +236,9 @@ $(document).ready(function(){
 					 type:"delete",
 					 contentType:"Application/json",
 					 data:JSON.stringify(id),
+					 headers:{
+						 'Authorization':sessionStorage.getItem("token")
+					 },
 					 success: function(value){
 						window.location.href="/Minishope/Admin-SanPham/?message=delete_OK";
 					 },
@@ -391,6 +394,9 @@ $(document).ready(function(){
 						type:"post",
 						contentType:"application/json",
 						data:JSON.stringify(dataSanPham),
+						 headers:{
+							 'Authorization':sessionStorage.getItem("token")
+						 },
 						success:function(value){
 							window.location.href="/Minishope/Admin-SanPham/?message=add_OK";
 						},
@@ -414,6 +420,9 @@ $(document).ready(function(){
 						url:"/Minishope/Api/upLoadFile",
 						type:"post",
 						data:form,
+						 headers:{
+							 'Authorization':sessionStorage.getItem("token")
+						 },
 						processData: false,
 				        contentType: false,
 				        error:function(value){
@@ -512,6 +521,9 @@ $(document).ready(function(){
 					type:"put",
 					contentType:"application/json",
 					data:JSON.stringify(dataSanPham),
+					 headers:{
+						 'Authorization':sessionStorage.getItem("token")
+					 },
 					success:function(value){
 						window.location.href="/Minishope/Admin-SanPham/?message=update_OK";
 					},

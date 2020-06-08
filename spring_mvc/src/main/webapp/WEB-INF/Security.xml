@@ -13,13 +13,20 @@
                                    http://www.springframework.org/schema/context 
                 http://www.springframework.org/schema/context/spring-context-3.1.xsd">
                 
-    <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
-    	   <intercept-url pattern="/Admin-User/"  access="hasRole('ROLE_admin')"/>
-   		  <intercept-url pattern="/admin/*"  access="hasRole('ROLE_admin')"/>
+    <http auto-config="true" use-expressions="true" disable-url-rewriting="true">
+     	   <intercept-url pattern="/Admin-User/"  access="hasRole('ROLE_admin')"/>
+   		  <intercept-url pattern="/admin/**"  access="hasRole('ROLE_admin')"/>
    		  <intercept-url pattern="/Admin-SanPham/" access="hasRole('ROLE_admin')"/> 
    		  <intercept-url pattern="/login" access="permitAll" />
-   		  <intercept-url pattern="/Api/*" access="permitAll" />
+   		  <intercept-url pattern="/Api/**" access="permitAll" />
    	      <intercept-url pattern="/resources/**" access="permitAll"/>
+   	      <intercept-url pattern="/Api/**" method="DELETE" access="hasRole('ROLE_admin')"/> 
+   	      <intercept-url pattern="/Api/**" method="PUT" access="hasRole('ROLE_admin')"/> 
+   	      <intercept-url pattern="/Api/**" method="POST" access="hasRole('ROLE_admin')"/> 
+   	      <intercept-url pattern="/Api/CapNhatGioHang/" access="permitAll"/>
+   	      <intercept-url pattern="/Api/XoaSanPham/" access="permitAll"/>
+   	      <intercept-url pattern="/Api/ThemGioHang/" access="permitAll"/>
+   	      <intercept-url pattern="/Api/login" access="permitAll" />
    	 	  <access-denied-handler error-page="/author"/>   
        <form-login 	 login-page="/login"
                      username-parameter="username"
@@ -40,11 +47,10 @@
 
 	<beans:import resource="classpath:IoC.xml"/>
 	
-
 	<beans:bean id="customUserDetail" class="com.thong.Service.CustomUserDetail"/>
 	<beans:bean id="customSuccessHandler" class="com.thong.security.CustomSuccessHandler"/>
 	<beans:bean id="customFailureHandler" class="com.thong.security.CustomFailureHandler"/>
-    <authentication-manager>
+    <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="customUserDetail">
           <password-encoder  ref="passwordEncoder"/> 
         </authentication-provider>

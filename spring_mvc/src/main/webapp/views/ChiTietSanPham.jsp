@@ -132,6 +132,7 @@
 									contentType : "Application/json",
 									data : JSON.stringify(browserData),
 									success : function(value) {
+										console.log(value)
 										$("#so-gioHang").text(value);
 										$("#active-vohang").text(value);
 

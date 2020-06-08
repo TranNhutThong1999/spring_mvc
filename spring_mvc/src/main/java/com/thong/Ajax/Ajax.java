@@ -2,82 +2,65 @@ package com.thong.Ajax;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.persistence.metamodel.SetAttribute;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-import org.apache.catalina.startup.ClassLoaderFactory.Repository;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.transaction.jta.platform.internal.JOnASJtaPlatform;
-import org.hibernate.hql.spi.id.inline.IdsClauseBuilder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.sun.istack.NotNull;
 import com.thong.DTO.MyUser;
 import com.thong.DTO.NhanVienDTO;
 import com.thong.DTO.SanPhamDTO;
 import com.thong.Entity.GioHang;
 import com.thong.Entity.HinhSanPham;
 import com.thong.Entity.NhanVien;
-import com.thong.Entity.SanPham;
 import com.thong.InterfaceService.INhanVienService;
 import com.thong.InterfaceService.ISanPhamService;
+import com.thong.JWT.JWT;
 import com.thong.Service.MailSerive;
-import com.thong.Service.NhanVienService;
-import com.thong.Util.SecurityUtil;
 
 @RestController
 @RequestMapping("Api/")
 @SessionAttributes({ "gioHang", "tongSoLuongGioHang", "SumMoney" })
+@Validated
 public class Ajax {
 	@Autowired
 	private ISanPhamService sanPhamService;
@@ -99,9 +82,15 @@ public class Ajax {
 
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
-	
-	 @Autowired
+
+	@Autowired
 	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private JWT jwt;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@PostMapping(value = "CheckSignUp/", produces = "Application/json;charset=UTF-8")
 	public String logInProccess(@RequestBody @Valid NhanVienDTO nv, BindingResult bindingResult) {
@@ -301,7 +290,8 @@ public class Ajax {
 
 	@DeleteMapping("Delete_Product/")
 	public void deleteProductManager(@RequestBody List<Integer> ob) {
-		sanPhamService.delete(ob);
+		System.out.println("deleted.--------");
+		// sanPhamService.delete(ob);
 	}
 
 	@PostMapping("create_Post")
@@ -405,7 +395,8 @@ public class Ajax {
 			nv.setTokenRamdom();
 			nv.setTimeTokenFuture(5);
 			nhanVienService.update(nv);
-			mailSerive.sendMail(mail, "Verify create account", "https://localhost:8443/Minishope/login?token=" + nv.getToken());
+			mailSerive.sendMail(mail, "Verify create account",
+					"https://localhost:8443/Minishope/login?token=" + nv.getToken());
 			return "ok";
 		} else {
 			return "Tên Đăng Nhập không tồn tại";
@@ -434,7 +425,8 @@ public class Ajax {
 		if (json.length() == 0) {
 			nv.setMatKhau(bCrypt.encode(password));
 			nv.setToken("");
-			nhanVienService.update(nv);;
+			nhanVienService.update(nv);
+			;
 			json.put("DangKy", "true");
 			return json.toString();
 		}
@@ -454,51 +446,71 @@ public class Ajax {
 
 	@PostMapping(value = "login-Facebook", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> LoginByFaceBook(@RequestBody String json) {
-		boolean result=false;
+		boolean result = false;
 		JSONObject o = new JSONObject(json);
 		NhanVien nv = nhanVienService.findByUserName(o.getString("userID"));
+		String JWT;
 		if (nv == null) {
 			// create user
 			System.out.println("vao");
 			NhanVien nvFB = new NhanVien();
 			nvFB.setTenDangNhap(o.getString("userID"));
-			nvFB.setHoTen( o.getString("firstname")+ " "+ o.getString("lastname"));
+			nvFB.setHoTen(o.getString("firstname") + " " + o.getString("lastname"));
 			nvFB.setJWToken(o.getString("token"));
 			nvFB.setEmail(o.getString("email"));
 			nvFB.setEnabled(true);
 			nvFB.setNonBanned(true);
 			nhanVienService.saveUserFB(nvFB);
-			 createPrincical(nvFB);
-			 return new ResponseEntity<String>("ok",HttpStatus.OK);
+			createPrincical(nvFB);
+			JWT = jwt.generateToken(nvFB.getTenDangNhap());
+			return new ResponseEntity<String>(JWT, HttpStatus.OK);
 		} else {
 			// create principal
-			result =createPrincical(nv);
-			if(result==false) {
+			result = createPrincical(nv);
+			if (result == false) {
 				System.out.println("bedddddd");
-				return new ResponseEntity<String>("failure",HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>("failure", HttpStatus.BAD_REQUEST);
 			}
-			 return new ResponseEntity<String>("ok",HttpStatus.OK);
+			JWT = jwt.generateToken(nv.getTenDangNhap());
+			return new ResponseEntity<String>(JWT, HttpStatus.OK);
 		}
 
 	}
 
 	private boolean createPrincical(NhanVien nv) {
-		
-		
 		List<GrantedAuthority> listAuthor = new ArrayList<GrantedAuthority>();
-		listAuthor.add(new SimpleGrantedAuthority("ROLE_user"));
+		listAuthor.add(new SimpleGrantedAuthority(nv.getChucVu().getTenChucVu()));
 		MyUser user;
-			user = new MyUser(nv.getTenDangNhap(), "", nv.isEnabled(), true, true, nv.isNonBanned(), listAuthor);
-		
+		user = new MyUser(nv.getTenDangNhap(), "", nv.isEnabled(), true, true, nv.isNonBanned(), listAuthor);
+
 		user.setEmail(nv.getEmail());
 		user.setHoTen(nv.getHoTen());
-	//	UserDetails userDetails = user;
-		if(user.isEnabled()==false || user.isAccountNonLocked()==false) {
+		// UserDetails userDetails = user;
+		if (user.isEnabled() == false || user.isAccountNonLocked() == false) {
 			return false;
 		}
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
 				user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
+		System.out.println("principal");
 		return true;
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<String> testValid(@RequestParam  String username,@RequestParam String password) {
+		
+		System.out.println(username);
+		System.out.println(password);
+		try {
+			Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+			SecurityContextHolder.getContext().setAuthentication(auth);
+			String JWT=jwt.generateToken(username);
+			return new ResponseEntity<String>(JWT,HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<String>("failure",HttpStatus.BAD_REQUEST);
+		}
+			
+		
+		//
 	}
 }
