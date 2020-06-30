@@ -29,17 +29,20 @@ public class CustomInterceptor_JWT extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		System.out.println("CustomInterceptor");
-		String token = request.getHeader("token");
-		if (jWT.validateToken(token)) {
+		System.out.println(request.getHeader("Authorization"));
+		String token = request.getHeader("Authorization");
+		if (jWT.validateToken(token)&& token!=null) {
 			String username = jWT.getUserNameFromJWT(token);
 			NhanVien nv = nhanVienService.findByUserName(username);
-			MyUser user =(MyUser) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+//			MyUser user =(MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //			if(nv.getTenDangNhap().equals(user.getUsername())) {
 //				return true;
 //			}
 			createPrincical(nv);
-			return false;
+			//createPrincical(nv);
+			return true;
 		}
+		//throw new TokenFail();
 		return false;
 	}
 
@@ -53,6 +56,7 @@ public class CustomInterceptor_JWT extends HandlerInterceptorAdapter {
 		user.setEmail(nv.getEmail());
 		user.setHoTen(nv.getHoTen());
 		// UserDetails userDetails = user;
+		System.out.println(nv.getChucVu().getTenChucVu());
 		if (user.isEnabled() == false || user.isAccountNonLocked() == false) {
 			return false;
 		}

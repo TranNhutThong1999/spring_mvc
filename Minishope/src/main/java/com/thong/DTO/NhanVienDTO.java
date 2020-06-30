@@ -40,7 +40,7 @@ public class NhanVienDTO {
 	private Timestamp timeToken;
 	private String token;
 	private boolean isNonBanned;
-	private String JWToken;
+	private String ToKenFB;
 
 	public NhanVienDTO() {
 		this.token = UUID.randomUUID().toString();
@@ -58,7 +58,7 @@ public class NhanVienDTO {
 		this.chucVu = nv.getChucVu();
 		this.isEnabled = nv.isEnabled();
 		this.matKhau = nv.getMatKhau();
-		this.JWToken=nv.getJWToken();
+		this.ToKenFB=nv.getToKenFB();
 		this.isNonBanned=nv.isNonBanned();
 	}
 
@@ -194,13 +194,14 @@ public class NhanVienDTO {
 		return isNonBanned;
 	}
 
-	public String getJWToken() {
-		return JWToken;
+	public String getToKenFB() {
+		return ToKenFB;
 	}
 
-	public void setJWToken(String jWToken) {
-		JWToken = jWToken;
+	public void setToKenFB(String toKenFB) {
+		ToKenFB = toKenFB;
 	}
+
 
 
 	

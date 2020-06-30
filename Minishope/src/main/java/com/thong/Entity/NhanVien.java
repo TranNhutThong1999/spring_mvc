@@ -39,7 +39,7 @@ public class NhanVien {
 	private String tenDangNhap;
 	private String matKhau;
 	private boolean isNonBanned;
-	private String JWToken;
+	private String ToKenFB;
 
 	@OneToOne
 	@JoinColumn(name = "idChucVu")
@@ -191,7 +191,7 @@ public class NhanVien {
 		this.tenDangNhap = nv.getTenDangNhap();
 		this.timeToken = (Timestamp) nv.getTimeToken();
 		this.token = nv.getToken();
-		this.JWToken=nv.getJWToken();
+		this.ToKenFB=nv.getToKenFB();
 		this.isNonBanned=nv.isNonBanned();
 
 	}
@@ -209,7 +209,7 @@ public class NhanVien {
 		this.tenDangNhap = nv.getTenDangNhap();
 		this.timeToken = (Timestamp) nv.getTimeToken();
 		this.token = nv.getToken();
-		this.JWToken=nv.getJWToken();
+		this.ToKenFB=nv.getToKenFB();
 		this.isNonBanned=nv.isNonBanned();
 	}
 
@@ -222,12 +222,13 @@ public class NhanVien {
 		this.isNonBanned = isNonBanned;
 	}
 
-	public String getJWToken() {
-		return JWToken;
+	
+	public String getToKenFB() {
+		return ToKenFB;
 	}
 
-	public void setJWToken(String jWToken) {
-		JWToken = jWToken;
+	public void setToKenFB(String toKenFB) {
+		ToKenFB = toKenFB;
 	}
 
 	@Override

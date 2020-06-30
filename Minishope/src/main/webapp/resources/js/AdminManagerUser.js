@@ -215,6 +215,9 @@ function checkedCSS(){
 						type:"delete",
 						contentType:"Application/json",
 						data:JSON.stringify(data),
+						 headers:{
+							 'Authorization':sessionStorage.getItem("token")
+						 },
 						success:function(value){
 							window.location.href="/Minishope/Admin-User/?message=delete_OK";
 						},
@@ -263,6 +266,9 @@ function checkedCSS(){
 						type:"post",
 						contentType:"Application/json",
 						data:JSON.stringify(dataSanPham),
+						 headers:{
+							 'Authorization':sessionStorage.getItem("token")
+						 },
 						success:function(value){
 							console.log(value)
 							if(value["DangKy"]==="true"){
@@ -321,6 +327,9 @@ function checkedCSS(){
 				url:"/Minishope/Api/HandleBan",
 				type:"put",
 				contentType:"application/json",
+				 headers:{
+					 'Authorization':sessionStorage.getItem("token")
+				 },
 				data:JSON.stringify(ob),
 				success:function(v){
 					

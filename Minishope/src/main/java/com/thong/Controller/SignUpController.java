@@ -54,7 +54,9 @@ public class SignUpController {
 			modelMap.addAttribute("SignUp", mes.getMessage("SignUp.fail", null, new Locale("vi")));
 			return "SignUp";
 		}
-		modelMap.addAttribute("user", nv);
+		nv.setEnabled(false);
+		nv.setNonBanned(true);
+		nhanVienService.save(nv);
 		mailSerive.sendMail(nv.getEmail(), "Verify create account", nv.getToken());
 		modelMap.addAttribute("message", mes.getMessage("verify.verify", null, new Locale("vi")));
 		modelMap.addAttribute("alert", "success");
@@ -62,20 +64,19 @@ public class SignUpController {
 	}
 
 	@PostMapping("/confirm-account")
-	public String confirm(@RequestParam String token, ModelMap modelMap, HttpSession s) {
-		NhanVienDTO nv =  (NhanVienDTO) s.getAttribute("user");
+	public String confirm(@RequestParam String token, ModelMap modelMap) {
+		NhanVienDTO nv =nhanVienService.findByTokenDTO(token);
 		if (nv != null) {
-			if (nv.getToken().equals(token)) {
-				nhanVienService.save(nv);
-				s.removeAttribute("user");
+				nv.setEnabled(true);
+				nhanVienService.update(nv);
 				return "redirect:/login?message=verify_success";
-			} else {
-				modelMap.addAttribute("message", "sai code vui lòng kiểm tra code được gửi tới mail");
+		}else {
+				modelMap.addAttribute("message", "sai code vui lòng kiểm tra lại");
 				return "verify";
 			}
-		} else {
-			return "redirect:/login?message=verify_timeout";
-		}
+//		} else {
+//			return "redirect:/login?message=verify_timeout";
+//		}
 	}
 
 }

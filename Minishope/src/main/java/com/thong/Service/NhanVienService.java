@@ -35,7 +35,8 @@ public class NhanVienService implements INhanVienService {
 			cv.setIdChucVu(3);
 			nv.setChucVu(cv);
 		}
-		nv.setEnabled(true);
+		nv.setEnabled(false);
+		nv.setNonBanned(true);
 		nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
 		System.out.println("mat khau " + nv.getMatKhau());
 		return nhanVienDAO.save(nv);
@@ -141,7 +142,6 @@ public class NhanVienService implements INhanVienService {
 		ChucVu cv = new ChucVu();
 			cv.setIdChucVu(3);
 		nv.setChucVu(cv);
-		nv.setMatKhau(bCrypt.encode(nv.getMatKhau()));
 		Integer i=nhanVienDAO.saveUserFB(nv);
 		if(i!=0) {
 			return true;

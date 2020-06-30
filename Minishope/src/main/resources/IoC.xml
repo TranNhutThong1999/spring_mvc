@@ -50,13 +50,14 @@
 	      </props> 
 	    </property>
 </bean> 
-	<!-- custom interceptor to Json web token -->
-	<!--  <mvc:interceptors>
+<!-- custom interceptor to Json web token -->
+	  <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/Api/**" />
 			<mvc:exclude-mapping path="/Api/CheckSignUp/" />
 			<mvc:exclude-mapping path="/Api/ThemGioHang/" />
 			<mvc:exclude-mapping path="/Api/CapNhatGioHang/" />
+			<mvc:exclude-mapping path="/Api/XoaSanPham/" />
 			<mvc:exclude-mapping path="/Api/SanPham" />
 			<mvc:exclude-mapping path="/Api/upLoadFile" />
 			<mvc:exclude-mapping path="/Api/NhanVien/" />
@@ -71,7 +72,7 @@
 				class="com.thong.security.CustomInterceptor_JWT"></bean>
 		</mvc:interceptor>
 
-	</mvc:interceptors>  -->
+	</mvc:interceptors>  
 
   <bean id="passwordEncoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>

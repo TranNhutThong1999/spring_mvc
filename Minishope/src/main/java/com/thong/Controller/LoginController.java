@@ -68,11 +68,7 @@ public class LoginController {
 //		}
 //		return "redirect:/Home/";
 //	}
-	@PostMapping("fb")
-	public String ForgetPassword(HttpServletRequest r) {
-		System.out.println("vao fb");
-		return null;
-	}
+
 	
 	static boolean isValid(String email) {
 		String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";

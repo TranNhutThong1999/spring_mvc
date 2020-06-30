@@ -2,85 +2,65 @@ package com.thong.Ajax;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.persistence.metamodel.SetAttribute;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.transaction.jta.platform.internal.JOnASJtaPlatform;
-import org.hibernate.hql.spi.id.inline.IdsClauseBuilder;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.sun.istack.NotNull;
-import com.thong.CustomValidation.IsExist;
 import com.thong.DTO.MyUser;
 import com.thong.DTO.NhanVienDTO;
 import com.thong.DTO.SanPhamDTO;
 import com.thong.Entity.GioHang;
 import com.thong.Entity.HinhSanPham;
 import com.thong.Entity.NhanVien;
-import com.thong.Entity.SanPham;
 import com.thong.InterfaceService.INhanVienService;
 import com.thong.InterfaceService.ISanPhamService;
 import com.thong.JWT.JWT;
 import com.thong.Service.MailSerive;
-import com.thong.Service.NhanVienService;
-import com.thong.Util.SecurityUtil;
 
 @RestController
 @RequestMapping("Api/")
 @SessionAttributes({ "gioHang", "tongSoLuongGioHang", "SumMoney" })
+@Validated
 public class Ajax {
 	@Autowired
 	private ISanPhamService sanPhamService;
@@ -105,10 +85,12 @@ public class Ajax {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
-	 @Autowired
-	 private JWT jWT;
 
+	@Autowired
+	private JWT jwt;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@PostMapping(value = "CheckSignUp/", produces = "Application/json;charset=UTF-8")
 	public String logInProccess(@RequestBody @Valid NhanVienDTO nv, BindingResult bindingResult) {
@@ -308,7 +290,8 @@ public class Ajax {
 
 	@DeleteMapping("Delete_Product/")
 	public void deleteProductManager(@RequestBody List<Integer> ob) {
-		sanPhamService.delete(ob);
+		System.out.println("deleted.--------");
+		// sanPhamService.delete(ob);
 	}
 
 	@PostMapping("create_Post")
@@ -451,7 +434,7 @@ public class Ajax {
 	}
 
 	@PutMapping("HandleBan")
-	public void handleBan(@RequestBody  String json, HttpServletRequest re, HttpServletResponse res) {
+	public void handleBan(@RequestBody String json, HttpServletRequest re, HttpServletResponse res) {
 		System.out.println(json);
 		JSONObject j = new JSONObject(json);// idNhanVien
 
@@ -462,24 +445,25 @@ public class Ajax {
 	}
 
 	@PostMapping(value = "login-Facebook", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> LoginByFaceBook(@RequestBody  String json) {
+	public ResponseEntity<String> LoginByFaceBook(@RequestBody String json) {
 		boolean result = false;
 		JSONObject o = new JSONObject(json);
 		NhanVien nv = nhanVienService.findByUserName(o.getString("userID"));
+		String JWT;
 		if (nv == null) {
 			// create user
 			System.out.println("vao");
 			NhanVien nvFB = new NhanVien();
 			nvFB.setTenDangNhap(o.getString("userID"));
 			nvFB.setHoTen(o.getString("firstname") + " " + o.getString("lastname"));
-			nvFB.setJWToken(o.getString("token"));
+			nvFB.setToKenFB(o.getString("token"));
 			nvFB.setEmail(o.getString("email"));
 			nvFB.setEnabled(true);
 			nvFB.setNonBanned(true);
-			//nvFB.setMatKhau("123456m");
 			nhanVienService.saveUserFB(nvFB);
 			createPrincical(nvFB);
-			return new ResponseEntity<String>("ok", HttpStatus.OK);
+			JWT = jwt.generateToken(nvFB.getTenDangNhap());
+			return new ResponseEntity<String>(JWT, HttpStatus.OK);
 		} else {
 			// create principal
 			result = createPrincical(nv);
@@ -487,7 +471,8 @@ public class Ajax {
 				System.out.println("bedddddd");
 				return new ResponseEntity<String>("failure", HttpStatus.BAD_REQUEST);
 			}
-			return new ResponseEntity<String>("ok", HttpStatus.OK);
+			JWT = jwt.generateToken(nv.getTenDangNhap());
+			return new ResponseEntity<String>(JWT, HttpStatus.OK);
 		}
 
 	}
@@ -496,7 +481,7 @@ public class Ajax {
 		List<GrantedAuthority> listAuthor = new ArrayList<GrantedAuthority>();
 		listAuthor.add(new SimpleGrantedAuthority(nv.getChucVu().getTenChucVu()));
 		MyUser user;
-		user = new MyUser(nv.getTenDangNhap(),nv.getMatKhau(), nv.isEnabled(), true, true, nv.isNonBanned(), listAuthor);
+		user = new MyUser(nv.getTenDangNhap(), "", nv.isEnabled(), true, true, nv.isNonBanned(), listAuthor);
 
 		user.setEmail(nv.getEmail());
 		user.setHoTen(nv.getHoTen());
@@ -510,16 +495,28 @@ public class Ajax {
 		System.out.println("principal");
 		return true;
 	}
+
 	@PostMapping("/login")
-	public String testValid(@RequestParam String username,@RequestParam String password) {
-//			return "err";
-//		}
-		//,BindingResult bindingResult
+	public ResponseEntity<String> testValid(@RequestParam  String username,@RequestParam String password) {
+		
 		System.out.println(username);
-		//Authentication au = new UsernamePasswordAuthenticationToken(username, password);
-		NhanVien nv = nhanVienService.findByUserName(username);
-		createPrincical(nv);
-		//String json=jWT.generateToken(username);
-		return "125";
+		System.out.println(password);
+		try {
+			Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+			SecurityContextHolder.getContext().setAuthentication(auth);
+			String JWT=jwt.generateToken(username);
+			return new ResponseEntity<String>(JWT,HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<String>("failure",HttpStatus.BAD_REQUEST);
+		}
+			
+		
+		//
+	}
+	@PostMapping("/webhook")
+	public ResponseEntity<String> webhook(@RequestBody String data) {
+		System.out.println(data);
+		return null;
+		
 	}
 }

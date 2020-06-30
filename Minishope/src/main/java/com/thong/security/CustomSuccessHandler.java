@@ -26,11 +26,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	
 	public void handle(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+			Authentication authentication,ModelMap m) throws IOException, ServletException {
 		String targetUrl = determineTargetUrl(authentication);
 		if (response.isCommitted()) {
 			return;
 		}
+		m.addAttribute("token", "12544");
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 		

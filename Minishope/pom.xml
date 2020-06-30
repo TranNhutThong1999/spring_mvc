@@ -9,13 +9,19 @@
 
 
 	<dependencies>
-			<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-	<!-- 	<dependency>
+	<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+	 	<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
 		    <version>0.9.1</version>
-		</dependency> -->
-	
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate.validator</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>6.1.5.Final</version>
+		</dependency>
+			<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency>
 		    <groupId>javax.validation</groupId>
 		    <artifactId>validation-api</artifactId>

@@ -11,6 +11,7 @@
 <title>Đăng Nhập</title>
 </head>
 <body>
+<!-- fdfd -->
 <!--modal-->
 <div id="pwdModal" class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" style="background-color: rgba(17, 17, 17, 0.5);" data-keyboard="true" data-backdrop="static">
   <div id="inputEmail" class="modal-dialog modal-dialog-centered">
@@ -97,8 +98,7 @@
 </div>
 	<div id="login" class="container-fluid background">
 		<div class="card" style="width: 18rem;">		
-			<form  id="idsignin" > <%--method="post"  action='<c:url value="/Api/login" />'  --%>
-			<security:csrfInput />
+			<form  id="idsignin">  <%-- method="post" action='<c:url value="/j_spring_security_check" />' --%>
 				<div class="card-body sigin" >
 					<h5 class="card-title">Sign in</h5>
 						<div class="alert alert-${alert} messenger" style="text-align:center; color:#2a950f" role="alert">
@@ -147,10 +147,14 @@
 			</form>
 			<div id="status">
 </div>
-<fb:login-button class="fb"
-  scope="public_profile,email"
-  onlogin="checkLoginState();">
-</fb:login-button>
+<div class="login_fb">
+<p>Login with </p>
+	<fb:login-button class="fb"
+ 		 scope="public_profile,email"
+ 		 onlogin="checkLoginState();">
+	</fb:login-button>
+</div>
+
 <jsp:include page="include/Scrip.jsp"></jsp:include>
 <script>
 
@@ -261,7 +265,8 @@
 			       }
 			    });
 		}
-			$('#nutSigIn').click(function(){
+			$('#nutSigIn').click(function(e){
+			//	e.preventdefault();
 				let name=$("#userName").val();
 				let password =$("#password").val();
 				$.ajax({
@@ -272,14 +277,19 @@
 						password:password
 					},
 					success:function(value){
-						console.log(value);
-						localStorage.setItem('token', value);
-						window.location.href="/Minishope/Home"
+						sessionStorage.setItem('token', value);
+						window.location.href="/Minishope/Home/";
 					},
 					error:function(err){
 						console.log(err)
+					},
+					statusCode: {
+					    400: function() {
+					    	window.location.href="/Minishope/login?message=failure";
+					    },
 					}
 				})
+				
 			}) 
 			
 			$("#clickForget").click(function(){

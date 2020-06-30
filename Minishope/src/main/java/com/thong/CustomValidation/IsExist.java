@@ -9,7 +9,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Constraint(validatedBy = IsExistConstraintValidator.class)  
-@Target( { ElementType.METHOD, ElementType.FIELD,ElementType.PARAMETER } )  
+@Target( { ElementType.METHOD, ElementType.FIELD } )  
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface IsExist {
 	// error message

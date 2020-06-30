@@ -35,7 +35,7 @@ public class SearchController {
 		modelMap.addAttribute("danhSachSanPham", list);
 		modelMap.addAttribute("keyWords", keyWords);
 		if(list==null || list.size()==0) {
-			modelMap.addAttribute("messenger_Search_Error", "không tìm thấy sản phẩm");
+			modelMap.addAttribute("messenger_Search_Error", "Không tìm thấy sản phẩm");
 			return "SanPham";
 		}
 		return "SanPham";
