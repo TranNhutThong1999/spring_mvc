@@ -17,9 +17,9 @@
 <mvc:resources location="/resources/" mapping="resources/**"></mvc:resources>
 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			 <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-	         <property name="url" value="jdbc:mysql://localhost:3306/dbminishop"/>
+	            <property name="url" value="jdbc:mysql://node230221-thongmap.j.layershift.co.uk"/>
 	        <property name="username" value="root"/>
-	         <property name="password" value="0985153812"/>
+	         <property name="password" value="AOAdbg92431"/>
 </bean> 
 <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
 		<property name="dataSource" ref="dataSource"></property>
