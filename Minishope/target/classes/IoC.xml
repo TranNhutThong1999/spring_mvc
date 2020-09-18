@@ -13,13 +13,19 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		">
+ <bean
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location">
+      <value>classpath:properties</value>
+    </property>
+  </bean>
 
 <mvc:resources location="/resources/" mapping="resources/**"></mvc:resources>
 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-			 <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-	         <property name="url" value="jdbc:mysql://localhost:3306/dbminishop"/>
-	        <property name="username" value="root"/>
-	         <property name="password" value="0985153812"/>
+			 <property name="driverClassName" value="${jdbc.driverClassName}"/>
+	            <property name="url" value="${jdbc.url}"/>
+	        <property name="username" value="${jdbc.username}"/>
+	         <property name="password" value="${jdbc.password}"/>
 </bean> 
 <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
 		<property name="dataSource" ref="dataSource"></property>
