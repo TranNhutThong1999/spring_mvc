@@ -104,37 +104,6 @@ public class Ajax {
 			}
 			return json.toString();
 		}
-//		if (nv.getTenDangNhap() != null) {
-//			if (nv.getTenDangNhap().length() >= 8 && nv.getTenDangNhap().length() <= 20) {
-//				if (isValidUserName(nv.getTenDangNhap()) == false) {
-//					return mes.getMessage("NhanVien.tenDangNhap.pattern", null, new Locale("vi"));
-//				} else {
-//					boolean check = nhanVienService.checkUserName(nv.getTenDangNhap());
-//					if (check == true) {
-//						return mes.getMessage("NhanVien.tenDangNhap.exist", null, new Locale("vi"));
-//					}
-//				}
-//			} else {
-//				return mes.getMessage("NhanVien.tenDangNhap.length", null, new Locale("vi"));
-//			}
-//		}
-
-//		if (nv.getEmail() != null) {
-//			System.out.println(nv.getEmail());
-//			if (isValidEmail(nv.getEmail()) == false) {
-//				return mes.getMessage("NhanVien.email.pattern", null, new Locale("vi"));
-//			}
-//		}
-//		if (nv.getMatKhau() != null) {
-//			if (nv.getMatKhau().length() < 6 || nv.getMatKhau().length() > 20) {
-//				return mes.getMessage("NhanVien.matKhau.length", null, new Locale("vi"));
-//			} else {
-//				System.out.println(isValidMatKhau(nv.getMatKhau()));
-//				if (isValidMatKhau(nv.getMatKhau()) == false) {
-//					return mes.getMessage("NhanVien.matKhau.pattern", null, new Locale("vi"));
-//				}
-//			}
-//		}
 
 		return "";
 	}
@@ -288,18 +257,18 @@ public class Ajax {
 		}
 	}
 
-	@DeleteMapping("Delete_Product/")
+	@DeleteMapping("Product")
 	public void deleteProductManager(@RequestBody List<Integer> ob) {
 		System.out.println("deleted.--------");
 		// sanPhamService.delete(ob);
 	}
 
-	@PostMapping("create_Post")
+	@PostMapping("Product")
 	public void createPost(@RequestBody SanPhamDTO ob) {
 		sanPhamService.create(ob);
 	}
 
-	@PutMapping("update_Post")
+	@PutMapping("Product")
 	public void updatePost(@RequestBody SanPhamDTO ob) {
 		System.out.println(ob.toString());
 		HinhSanPham hsp = new HinhSanPham();
@@ -307,7 +276,7 @@ public class Ajax {
 		sanPhamService.update(ob);
 	}
 
-	@PostMapping("upLoadFile")
+	@PostMapping("File")
 	public String upLoadFile(MultipartHttpServletRequest request, @RequestParam(required = false) String editor)
 			throws IllegalStateException, IOException {
 		String part = context.getRealPath("resources/Images/");
@@ -316,7 +285,6 @@ public class Ajax {
 		while (name.hasNext()) {
 			MultipartFile f = request.getFile(name.next());
 			File file = new File(part + f.getOriginalFilename());
-			System.out.println("sssssssssssssssssssssss" + file.getAbsolutePath());
 			f.transferTo(file);
 			json.put("fileName", f.getOriginalFilename());
 			json.put("url", "/Minishope/resources/Images/" + f.getOriginalFilename());

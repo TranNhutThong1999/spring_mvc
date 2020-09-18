@@ -232,7 +232,7 @@ $(document).ready(function(){
 			 })
 					var content=$(this).closest("tr");
 				 $.ajax({
-					 url:"/Minishope/Api/Delete_Product/",
+					 url:"/Minishope/Api/Product",
 					 type:"delete",
 					 contentType:"Application/json",
 					 data:JSON.stringify(id),
@@ -362,7 +362,9 @@ $(document).ready(function(){
 					 var arr=[];
 					 var objectImage=[]
 					 for(let i of nameImage){
-						 objectImage.push("{id=0,location="+i+"}")
+						 let a={};
+						 a['location']=i.name
+						 objectImage.push(a)
 					 }
 					 dataSanPham["hinhSanPham"]= objectImage;
 					 console.log(dataSanPham["hinhSanPham"])
@@ -390,7 +392,7 @@ $(document).ready(function(){
 						
 						console.log(dataSanPham)
 					$.ajax({
-						url:"/Minishope/Api/create_Post",
+						url:"/Minishope/Api/Product",
 						type:"post",
 						contentType:"application/json",
 						data:JSON.stringify(dataSanPham),
@@ -417,7 +419,7 @@ $(document).ready(function(){
 						form.append("file",f);
 					}
 					$.ajax({
-						url:"/Minishope/Api/upLoadFile",
+						url:"/Minishope/Api/File",
 						type:"post",
 						data:form,
 						 headers:{
@@ -517,7 +519,7 @@ $(document).ready(function(){
 				dataSanPham["moTa"]=tinymce.activeEditor.getContent();
 				console.log(dataSanPham)
 				$.ajax({
-					url:"/Minishope/Api/update_Post",
+					url:"/Minishope/Api/Product",
 					type:"put",
 					contentType:"application/json",
 					data:JSON.stringify(dataSanPham),

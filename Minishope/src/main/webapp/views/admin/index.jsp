@@ -327,7 +327,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	               data.append('file', file_data);
 	                
 	                $.ajax({
-	                  url: '/Minishope/Api/upLoadFile',
+	                  url: '/Minishope/Api/File',
 	                  type: 'POST',
 	                  data: data,
 	                  processData: false, // Don't process the files
